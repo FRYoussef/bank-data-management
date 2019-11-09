@@ -1,32 +1,7 @@
--- phpMyAdmin SQL Dump
--- version 4.9.1
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost
--- Tiempo de generación: 08-11-2019 a las 01:09:28
--- Versión del servidor: 10.4.8-MariaDB
--- Versión de PHP: 7.1.32
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `Bank-data-management`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Account`
---
 
 CREATE TABLE `Account` (
   `accountId` int(6) NOT NULL,
@@ -36,11 +11,25 @@ CREATE TABLE `Account` (
   `currency` enum('EUR','JPY','USD','GBP') COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
+CREATE TABLE `AccountEntry` (
+  `entryId` int(6) NOT NULL,
+  `type` enum('withdraw','deposit','transferIn','transferOut','creditCharge','debitCharge') COLLATE utf8_spanish_ci NOT NULL,
+  `amount` double(18,4) NOT NULL,
+  `date` date NOT NULL,
+  `description` text COLLATE utf8_spanish_ci NOT NULL,
+  `ordererName` text COLLATE utf8_spanish_ci NOT NULL,
+  `office` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Estructura de tabla para la tabla `Address`
---
+CREATE TABLE `AccountRC` (
+  `entryId` int(6) NOT NULL,
+  `cardId` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+CREATE TABLE `AccountRE` (
+  `entryId` int(6) NOT NULL,
+  `accountId` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `Address` (
   `addressId` int(6) NOT NULL,
@@ -51,44 +40,30 @@ CREATE TABLE `Address` (
   `door` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `AddressLocality`
---
-
 CREATE TABLE `AddressLocality` (
   `addressId` int(6) NOT NULL,
   `locality` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `AddressPostCode`
---
 
 CREATE TABLE `AddressPostCode` (
   `addressId` int(6) NOT NULL,
   `postCode` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `AddressProvince`
---
-
 CREATE TABLE `AddressProvince` (
   `addressId` int(6) NOT NULL,
   `province` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `DepositAccount`
---
+CREATE TABLE `Card` (
+  `cardId` int(6) NOT NULL,
+  `cardNumber` text COLLATE utf8_spanish_ci NOT NULL,
+  `releaseDate` date NOT NULL,
+  `expireDate` date NOT NULL,
+  `verificationValue` int(3) NOT NULL,
+  `pin` int(4) NOT NULL,
+  `bussinesCardId` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `DepositAccount` (
   `depositAccountId` int(6) NOT NULL,
@@ -96,46 +71,26 @@ CREATE TABLE `DepositAccount` (
   `accountId` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Interest`
---
-
 CREATE TABLE `Interest` (
   `interestId` int(2) NOT NULL,
   `isVariable` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `IsAutorized`
---
 
 CREATE TABLE `IsAutorized` (
   `personId` int(6) NOT NULL,
   `accountId` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Owns`
---
-
 CREATE TABLE `Owns` (
-  `costumerId` int(6) NOT NULL,
+  `personId` int(6) NOT NULL,
   `productId` int(6) NOT NULL,
   `accountId` int(6) NOT NULL,
   `interesId` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Product`
---
+CREATE TABLE `Person` (
+  `personId` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `Product` (
   `productId` int(6) NOT NULL,
@@ -144,120 +99,88 @@ CREATE TABLE `Product` (
   `totalAmount` double(18,4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Índices para tablas volcadas
---
 
---
--- Indices de la tabla `Account`
---
 ALTER TABLE `Account`
   ADD PRIMARY KEY (`accountId`),
   ADD UNIQUE KEY `accountNumber` (`accountNumber`) USING HASH;
 
---
--- Indices de la tabla `Address`
---
+ALTER TABLE `AccountEntry`
+  ADD PRIMARY KEY (`entryId`),
+  ADD UNIQUE KEY `ordererName` (`ordererName`) USING HASH;
+
+ALTER TABLE `AccountRC`
+  ADD PRIMARY KEY (`entryId`);
+
+ALTER TABLE `AccountRE`
+  ADD PRIMARY KEY (`entryId`),
+  ADD KEY `accountId` (`accountId`);
+
 ALTER TABLE `Address`
   ADD PRIMARY KEY (`addressId`);
 
---
--- Indices de la tabla `AddressLocality`
---
 ALTER TABLE `AddressLocality`
   ADD PRIMARY KEY (`addressId`);
 
---
--- Indices de la tabla `AddressPostCode`
---
 ALTER TABLE `AddressPostCode`
   ADD PRIMARY KEY (`addressId`);
 
---
--- Indices de la tabla `AddressProvince`
---
 ALTER TABLE `AddressProvince`
   ADD PRIMARY KEY (`addressId`);
 
---
--- Indices de la tabla `DepositAccount`
---
+ALTER TABLE `Card`
+  ADD PRIMARY KEY (`cardId`);
+
 ALTER TABLE `DepositAccount`
   ADD PRIMARY KEY (`depositAccountId`),
   ADD UNIQUE KEY `savingAccount` (`savingAccount`) USING HASH,
   ADD KEY `accountId` (`accountId`);
 
---
--- Indices de la tabla `Interest`
---
 ALTER TABLE `Interest`
   ADD PRIMARY KEY (`interestId`);
 
---
--- Indices de la tabla `IsAutorized`
---
 ALTER TABLE `IsAutorized`
   ADD PRIMARY KEY (`personId`,`accountId`),
   ADD KEY `accountId` (`accountId`);
 
---
--- Indices de la tabla `Owns`
---
 ALTER TABLE `Owns`
-  ADD PRIMARY KEY (`costumerId`,`productId`,`accountId`),
+  ADD PRIMARY KEY (`personId`,`productId`,`accountId`),
   ADD KEY `productId` (`productId`),
   ADD KEY `owns_ibfk_2` (`accountId`),
   ADD KEY `owns_ibfk_3` (`interesId`);
 
---
--- Indices de la tabla `Product`
---
+ALTER TABLE `Person`
+  ADD PRIMARY KEY (`personId`);
+
 ALTER TABLE `Product`
   ADD PRIMARY KEY (`productId`);
 
---
--- Restricciones para tablas volcadas
---
 
---
--- Filtros para la tabla `AddressLocality`
---
+ALTER TABLE `AccountRC`
+  ADD CONSTRAINT `accountrc_ibfk_1` FOREIGN KEY (`entryId`) REFERENCES `AccountEntry` (`entryId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `AccountRE`
+  ADD CONSTRAINT `accountre_ibfk_1` FOREIGN KEY (`accountId`) REFERENCES `Account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `accountre_ibfk_2` FOREIGN KEY (`entryId`) REFERENCES `AccountEntry` (`entryId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE `AddressLocality`
   ADD CONSTRAINT `addresslocality_ibfk_1` FOREIGN KEY (`addressId`) REFERENCES `Address` (`addressId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Filtros para la tabla `AddressPostCode`
---
 ALTER TABLE `AddressPostCode`
   ADD CONSTRAINT `addresspostcode_ibfk_1` FOREIGN KEY (`addressId`) REFERENCES `Address` (`addressId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Filtros para la tabla `AddressProvince`
---
 ALTER TABLE `AddressProvince`
   ADD CONSTRAINT `addressprovince_ibfk_1` FOREIGN KEY (`addressId`) REFERENCES `Address` (`addressId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Filtros para la tabla `DepositAccount`
---
 ALTER TABLE `DepositAccount`
   ADD CONSTRAINT `depositaccount_ibfk_1` FOREIGN KEY (`accountId`) REFERENCES `Account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Filtros para la tabla `IsAutorized`
---
 ALTER TABLE `IsAutorized`
-  ADD CONSTRAINT `isautorized_ibfk_1` FOREIGN KEY (`accountId`) REFERENCES `Account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `isautorized_ibfk_1` FOREIGN KEY (`accountId`) REFERENCES `Account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `isautorized_ibfk_2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Filtros para la tabla `Owns`
---
 ALTER TABLE `Owns`
   ADD CONSTRAINT `owns_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `Product` (`productId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `owns_ibfk_2` FOREIGN KEY (`accountId`) REFERENCES `Account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `owns_ibfk_3` FOREIGN KEY (`interesId`) REFERENCES `Interest` (`interestId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `owns_ibfk_3` FOREIGN KEY (`interesId`) REFERENCES `Interest` (`interestId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `owns_ibfk_4` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
