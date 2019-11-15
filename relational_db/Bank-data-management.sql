@@ -93,7 +93,7 @@ CREATE TABLE `CardOperation` (
   PRIMARY KEY (`entryId`),
   FOREIGN KEY (`entryId`) 
     REFERENCES `AccountEntry`(`entryId`)
-    ON DELETE CASCADE ON UPDATE CASCADE
+    ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`cardId`) 
     REFERENCES `Card`(`cardId`)
     ON DELETE CASCADE ON UPDATE CASCADE
@@ -131,7 +131,7 @@ CREATE TABLE `CreditPaymentCard` (
   PRIMARY KEY (`creditPaymentId`),
   FOREIGN KEY (`creditPaymentId`)
     REFERENCES `CreditPayment`(`creditPaymentId`)
-    ON DELETE CASCADE ON UPDATE CASCADE
+    ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`cardId`)
     REFERENCES `Card`(`cardId`)
     ON DELETE CASCADE ON UPDATE CASCADE
@@ -192,7 +192,6 @@ CREATE TABLE `Product` (
   `productId` int(6) NOT NULL AUTO_INCREMENT ,
   `releaseDate` date NOT NULL,
   `expireDate` date NOT NULL,
-  `amountInvested` double(18,4) NOT NULL,
   `totalAmount` double(18,4) NOT NULL,
   PRIMARY KEY (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
