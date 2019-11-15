@@ -66,8 +66,7 @@ CREATE TABLE `AddressProvince` (
 CREATE TABLE `BussinesCard` (
   `bussinesCardId` int(6) NOT NULL AUTO_INCREMENT,
   `name` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`bussinesCardId`),
-  UNIQUE `name` (`name`) USING HASH
+  PRIMARY KEY (`bussinesCardId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
