@@ -1,9 +1,3 @@
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
 CREATE TABLE `Account` (
   `accountId` int(6) NOT NULL AUTO_INCREMENT ,
   `accountNumber` text COLLATE utf8_spanish_ci NOT NULL,
@@ -22,8 +16,7 @@ CREATE TABLE `AccountEntry` (
   `description` text COLLATE utf8_spanish_ci NOT NULL,
   `ordererName` text COLLATE utf8_spanish_ci NULL,
   `office` int(6) NOT NULL,
-  PRIMARY KEY (`entryId`),
-  UNIQUE `ordererName` (`ordererName`) USING HASH
+  PRIMARY KEY (`entryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `AccountOperation` (
