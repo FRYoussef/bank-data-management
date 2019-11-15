@@ -129,6 +129,9 @@ CREATE TABLE `CreditPaymentCard` (
   `creditPaymentId` int(6) NOT NULL AUTO_INCREMENT ,
   `cardId` int(6) NOT NULL,
   PRIMARY KEY (`creditPaymentId`),
+  FOREIGN KEY (`creditPaymentId`)
+    REFERENCES `CreditPayment`(`creditPaymentId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
   FOREIGN KEY (`cardId`)
     REFERENCES `Card`(`cardId`)
     ON DELETE CASCADE ON UPDATE CASCADE
