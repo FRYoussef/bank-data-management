@@ -91,6 +91,9 @@ CREATE TABLE `CardOperation` (
   `entryId` int(6) NOT NULL AUTO_INCREMENT ,
   `cardId` int(6) NOT NULL,
   PRIMARY KEY (`entryId`),
+  FOREIGN KEY (`entryId`) 
+    REFERENCES `AccountEntry`(`entryId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
   FOREIGN KEY (`cardId`) 
     REFERENCES `Card`(`cardId`)
     ON DELETE CASCADE ON UPDATE CASCADE
