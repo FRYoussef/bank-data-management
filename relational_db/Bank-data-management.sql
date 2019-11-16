@@ -40,7 +40,7 @@ CREATE TABLE `AddressLocality` (
 CREATE TABLE `AddressPostCode` (
   `addressPCId` int(6) NOT NULL AUTO_INCREMENT ,
   `postCode` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressPCId`),
+  PRIMARY KEY (`addressPCId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
