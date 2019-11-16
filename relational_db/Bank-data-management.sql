@@ -23,6 +23,9 @@ CREATE TABLE `AccountOperation` (
   `entryId` int(6) NOT NULL AUTO_INCREMENT ,
   `accountId` int(6) NOT NULL,
   PRIMARY KEY (`entryId`),
+  FOREIGN KEY (`entryId`)
+    REFERENCES `AccountEntry`(`entryId`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`accountId`)
     REFERENCES `Account`(`accountId`)
     ON DELETE CASCADE ON UPDATE CASCADE
