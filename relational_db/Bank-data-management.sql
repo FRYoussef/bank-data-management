@@ -28,29 +28,6 @@ CREATE TABLE `AccountOperation` (
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
-CREATE TABLE `Address` (
-  `addressId` int(6) NOT NULL AUTO_INCREMENT ,
-  `street` text COLLATE utf8_spanish_ci NOT NULL,
-  `number` int(3) NOT NULL,
-  `stairwell` text COLLATE utf8_spanish_ci NULL,
-  `floor` int(3) NULL,
-  `door` text COLLATE utf8_spanish_ci NULL,
-  `addressProvId` int(6) NOT NULL,
-  `addressPCId` int(6) NOT NULL,
-  `addressLocId` int(6) NOT NULL,
-  PRIMARY KEY (`addressId`),
-  FOREIGN KEY (`addressProvId`) 
-    REFERENCES `AddressProvince`(`addressProvId`)
-    ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (`addressLocId`) 
-    REFERENCES `AddressLocality`(`addressLocId`)
-    ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (`addressPCId`) 
-    REFERENCES `AddressPostCode`(`addressPCId`)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
-
 
 CREATE TABLE `AddressLocality` (
   `addressLocId` int(6) NOT NULL AUTO_INCREMENT ,
@@ -72,6 +49,29 @@ CREATE TABLE `AddressProvince` (
   `addressProvId` int(6) NOT NULL AUTO_INCREMENT,
   `province` text COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`addressProvId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+
+CREATE TABLE `Address` (
+  `addressId` int(6) NOT NULL AUTO_INCREMENT ,
+  `street` text COLLATE utf8_spanish_ci NOT NULL,
+  `number` int(3) NOT NULL,
+  `stairwell` text COLLATE utf8_spanish_ci NULL,
+  `floor` int(3) NULL,
+  `door` text COLLATE utf8_spanish_ci NULL,
+  `addressProvId` int(6) NOT NULL,
+  `addressPCId` int(6) NOT NULL,
+  `addressLocId` int(6) NOT NULL,
+  PRIMARY KEY (`addressId`),
+  FOREIGN KEY (`addressProvId`) 
+    REFERENCES `AddressProvince`(`addressProvId`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`addressLocId`) 
+    REFERENCES `AddressLocality`(`addressLocId`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`addressPCId`) 
+    REFERENCES `AddressPostCode`(`addressPCId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
