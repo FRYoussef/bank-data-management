@@ -35,40 +35,43 @@ CREATE TABLE `Address` (
   `stairwell` text COLLATE utf8_spanish_ci NULL,
   `floor` int(3) NULL,
   `door` text COLLATE utf8_spanish_ci NULL,
-  PRIMARY KEY (`addressId`)
+  `addressProvId` int(6) NOT NULL,
+  `addressPCId` int(6) NOT NULL,
+  `addressLocId` int(6) NOT NULL,
+  PRIMARY KEY (`addressId`),
+  FOREIGN KEY (`addressProvId`) 
+    REFERENCES `AddressProvince`(`addressProvId`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`addressLocId`) 
+    REFERENCES `AddressLocality`(`addressLocId`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`addressPCId`) 
+    REFERENCES `AddressPostCode`(`addressPCId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
 
 CREATE TABLE `AddressLocality` (
-  `addressId` int(6) NOT NULL AUTO_INCREMENT ,
+  `addressLocId` int(6) NOT NULL AUTO_INCREMENT ,
   `locality` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressId`),
-  FOREIGN KEY (`addressId`) 
-    REFERENCES `Address`(`addressId`)
-    ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`addressLocId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
 
 CREATE TABLE `AddressPostCode` (
-  `addressId` int(6) NOT NULL AUTO_INCREMENT ,
+  `addressPCId` int(6) NOT NULL AUTO_INCREMENT ,
   `postCode` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressId`),
-  FOREIGN KEY (`addressId`) 
-    REFERENCES `Address`(`addressId`)
-    ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`addressPCId`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
 
 CREATE TABLE `AddressProvince` (
-  `addressId` int(6) NOT NULL AUTO_INCREMENT,
+  `addressProvId` int(6) NOT NULL AUTO_INCREMENT,
   `province` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressId`),
-  FOREIGN KEY (`addressId`) 
-    REFERENCES `Address`(`addressId`)
-    ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`addressProvId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
