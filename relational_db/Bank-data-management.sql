@@ -54,6 +54,7 @@ CREATE TABLE `AddressPostCode` (
   PRIMARY KEY (`addressId`)
   FOREIGN KEY (`addressId`) 
     REFERENCES `Address`(`addressId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
