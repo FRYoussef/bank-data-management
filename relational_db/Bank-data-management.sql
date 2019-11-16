@@ -51,7 +51,7 @@ CREATE TABLE `AddressLocality` (
 CREATE TABLE `AddressPostCode` (
   `addressId` int(6) NOT NULL AUTO_INCREMENT ,
   `postCode` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressId`)
+  PRIMARY KEY (`addressId`),
   FOREIGN KEY (`addressId`) 
     REFERENCES `Address`(`addressId`)
     ON DELETE CASCADE ON UPDATE CASCADE
