@@ -43,7 +43,10 @@ CREATE TABLE `Address` (
 CREATE TABLE `AddressLocality` (
   `addressId` int(6) NOT NULL AUTO_INCREMENT ,
   `locality` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressId`)
+  PRIMARY KEY (`addressId`),
+  FOREIGN KEY (`addressId`) 
+    REFERENCES `Address`(`addressId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
@@ -62,7 +65,10 @@ CREATE TABLE `AddressPostCode` (
 CREATE TABLE `AddressProvince` (
   `addressId` int(6) NOT NULL AUTO_INCREMENT,
   `province` text COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`addressId`)
+  PRIMARY KEY (`addressId`),
+  FOREIGN KEY (`addressId`) 
+    REFERENCES `Address`(`addressId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
