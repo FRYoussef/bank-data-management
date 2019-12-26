@@ -40,3 +40,29 @@ Use the following [guide](https://www.digitalocean.com/community/tutorials/how-t
      <b>hive> show tables;</br>
         OK</br>
         Time taken: 0.803 seconds</b>
+        
+## Hive Configuration
+Hive needs a folder to store the DBs, so we have to configure where to locate that folder (by default is located in /user/hive/warehouse). For the sake of simplicity, I'll create the hive's folder inside this repository (bank-data-management).
+
+  1. Create the folder with hdfs command:</br>
+     <b>% hdfs dfs -mkdir -p warehouse</b>
+     
+  2. Set read/write permissions:</br>
+     <b>% hdfs dfs -chmod g+w warehouse</b>
+     
+  3. Edit the file where Hive is looking for the folder (you must use an absolute path):</br>
+     <b>% nano \<path where you have stored hive\>/apache-hive-2.3.6-bin/conf/hive-site.xml</b>
+  
+     Add the following lines:</br>
+     <b>\<configuration\></br>
+          \<property\></br>
+            \<name\>hive.metastore.warehouse.dir\</name\></br>
+            \<value\>\<absolute path where you store this repo\>/bank-data-management/warehouse\</value\></br>
+          \</property\></br>
+        \</configuration\></b>
+  
+## Run hive-create-schema.sql
+After whole Hive's configuration, you can now run the script with:
+  
+  <b>% hive -f data-warehouse/hive-create-schema.sql</b>
+
