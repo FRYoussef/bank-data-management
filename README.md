@@ -27,5 +27,16 @@ Use the following [guide](https://www.digitalocean.com/community/tutorials/how-t
   4. Reload the script with:</br>
      <b>% source .bashrc</b>
      
-  5. Now, you can launch hive in stand alone mode:</br>
+  5. Install the following packages:</br>
+     (Ubuntu) <b>% sudo apt install derby-tools libderby-java libderbyclient-java</b>
+     
+  6. Launch this command ,where you are gonna work, in order to initialize metastore_db:</br>
+     <b>% schematool -initSchema -dbType derby</b>
+     
+  7. Now, you can launch hive in stand alone mode:</br>
      <b>% hive</b>
+  
+  8. Test it, with:</br>
+     <b>hive> show tables;</br>
+        OK</br>
+        Time taken: 0.803 seconds</b>
