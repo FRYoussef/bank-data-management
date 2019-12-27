@@ -1,4 +1,19 @@
-INSERT INTO `Credit` VALUES ('1','77.6150', now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `Credit` VALUES ('1','77.6150', now()),
 ('2','42.8600', now()),
 ('3','32.2625', now()),
 ('4','7827353.3326', now()),
@@ -997,4 +1012,15 @@ INSERT INTO `Credit` VALUES ('1','77.6150', now()),
 ('997','341638.1156', now()),
 ('998','3.6536', now()),
 ('999','18092.4557', now()),
-('1000','0.0000',now()); 
+('1000','0.0000',now()); ";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

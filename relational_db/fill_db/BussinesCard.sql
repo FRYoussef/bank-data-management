@@ -1,5 +1,5 @@
 
-INSERT INTO `BussinesCard` VALUES ('1','Visa'),
-('2','MasterCard'),
-('3','American Express'),
-('4','Discover Card'); 
+INSERT INTO `BussinesCard` VALUES ('1','Visa', now()),
+('2','MasterCard', now()),
+('3','American Express', now()),
+('4','Discover Card',now()); 

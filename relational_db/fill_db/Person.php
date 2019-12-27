@@ -1,4 +1,20 @@
-INSERT INTO `Person` VALUES ('1','Sienna','Walsh','3f6d0960ce3c22312a9a1bccfd1efbe126f14af7','1','Nauru','4393595.99','1975-07-28','sally64@example.com','otro','336-274-4443x82732','','549601',now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `Person` VALUES ('1','Sienna','Walsh','3f6d0960ce3c22312a9a1bccfd1efbe126f14af7','1','Nauru','4393595.99','1975-07-28','sally64@example.com','otro','336-274-4443x82732','','549601',now()),
 ('2','Eldred','Blanda','952fe56ffe4a43a58547af520a97b4456c4adf64','2','Tajikistan','75350298.03','2006-10-03','shanon58@example.com','hombre','(933)374-9421x108','228','37988',now()),
 ('3','Dwight','Vandervort','28954de4188f6ea55681f018d2217ddff88dff6e','3','Ghana','99999999.99','2011-06-19','quincy19@example.net','hombre','09748131891','423696','637551',now()),
 ('4','Cecil','Kertzmann','c5fd93fd328c6e8411ba63d6b90e6dae6de4a5ba','4','Algeria','0.00','1999-03-02','xking@example.net','hombre','335.564.8793','830544843','817202',now()),
@@ -997,4 +1013,15 @@ INSERT INTO `Person` VALUES ('1','Sienna','Walsh','3f6d0960ce3c22312a9a1bccfd1ef
 ('997','Una','Swaniawski','8cfed6035b2d82d8d974ea45b1c2742c1f9abe71','997','British Indian Ocean Territory (Chagos Archipelago)','1.05','1982-02-21','buckridge.cathrine@example.com','mujer','351.049.1544x571','45624396','175468',now()),
 ('998','Vernie','Langworth','11b01df0d063d40781db4bb14c515d74d253908a','998','Guyana','0.00','1982-09-15','jordane.donnelly@example.com','mujer','(079)256-7863x3298','4651','477543',now()),
 ('999','Merle','Wiegand','45eed157cf9944d1aa13a1a1014bf3ae33d6c44c','999','Guadeloupe','52.43','1986-11-10','drau@example.net','otro','(731)273-0279','602960432','389123',now()),
-('1000','Braulio','Kautzer','87db53749d318b9b65c5b3908b40d1dc1d5cb845','1000','Croatia','158789.70','2013-12-15','laura.yost@example.com','otro','(355)619-8556','58166','313893',now()); 
+('1000','Braulio','Kautzer','87db53749d318b9b65c5b3908b40d1dc1d5cb845','1000','Croatia','158789.70','2013-12-15','laura.yost@example.com','otro','(355)619-8556','58166','313893',now()); ";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

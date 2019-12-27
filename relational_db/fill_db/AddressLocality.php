@@ -1,5 +1,19 @@
 
-INSERT INTO `AddressLocality` VALUES ('1','East Roderick', now()),
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+$sql="INSERT INTO `AddressLocality` VALUES ('1','East Roderick', now()),
 ('2','Lake Donavon', now()),
 ('3','South Melissaborough', now()),
 ('4','Hettingermouth', now()),
@@ -998,4 +1012,14 @@ INSERT INTO `AddressLocality` VALUES ('1','East Roderick', now()),
 ('997','Vonview', now()),
 ('998','Herzogmouth', now()),
 ('999','Lake Kadinborough', now()),
-('1000','North Dorris',now()); 
+('1000','North Dorris',now());";
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

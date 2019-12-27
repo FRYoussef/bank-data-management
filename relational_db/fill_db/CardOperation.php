@@ -1,4 +1,19 @@
-INSERT INTO `CardOperation` VALUES ('1','1', now()),
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `CardOperation` VALUES ('1','1', now()),
 ('1001','1', now()),
 ('2001','1', now()),
 ('3001','1', now()),
@@ -9997,4 +10012,15 @@ INSERT INTO `CardOperation` VALUES ('1','1', now()),
 ('7000','1000', now()),
 ('8000','1000', now()),
 ('9000','1000', now()),
-('10000','1000',now()); 
+('10000','1000',now());";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

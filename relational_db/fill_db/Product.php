@@ -1,4 +1,20 @@
-INSERT INTO `Product` VALUES ('1','1971-08-29','1973-08-18','68380268.8524',now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `Product` VALUES ('1','1971-08-29','1973-08-18','68380268.8524',now()),
 ('2','1994-06-13','1991-03-27','51818758.8888',now()),
 ('3','2000-09-18','1992-04-13','3964.2383',now()),
 ('4','1994-08-12','2014-03-26','3141664.8346',now()),
@@ -997,4 +1013,15 @@ INSERT INTO `Product` VALUES ('1','1971-08-29','1973-08-18','68380268.8524',now(
 ('997','1997-07-06','1987-12-28','0.0000',now()),
 ('998','2013-05-26','1984-08-08','625.0068',now()),
 ('999','1980-11-29','1982-10-12','170.6887',now()),
-('1000','2012-02-04','1997-10-14','253849.5000',now()); 
+('1000','2012-02-04','1997-10-14','253849.5000',now()); ";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

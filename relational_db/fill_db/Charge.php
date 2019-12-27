@@ -1,4 +1,20 @@
-INSERT INTO `Charge` VALUES ('1','0.0000','2010-05-02', now()),
+
+<?php 
+
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+$sql="INSERT INTO `Charge` VALUES ('1','0.0000','2010-05-02', now()),
 ('2','124657.8651','1974-07-15', now()),
 ('3','11.2841','1976-01-29', now()),
 ('4','48876154.0000','1971-03-20', now()),
@@ -997,4 +1013,15 @@ INSERT INTO `Charge` VALUES ('1','0.0000','2010-05-02', now()),
 ('997','12094.9195','2010-01-12', now()),
 ('998','360.2800','1979-08-02', now()),
 ('999','6514.2350','2003-02-11', now()),
-('1000','2261.1500','1988-06-01',now()); 
+('1000','2261.1500','1988-06-01',now());";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "Charge table filled"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

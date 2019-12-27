@@ -1,4 +1,19 @@
-INSERT INTO `AccountEntry` VALUES ('1','creditCharge','6.2855','1984-10-05','Debitis et suscipit similique excepturi incidunt debitis. Sit quaerat facilis dolores et maiores et atque. Est saepe officia porro incidunt qui.','Miss Maeve DuBuque II','916924',now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+  
+$sql1="INSERT INTO `AccountEntry` VALUES ('1','creditCharge','6.2855','1984-10-05','Debitis et suscipit similique excepturi incidunt debitis. Sit quaerat facilis dolores et maiores et atque. Est saepe officia porro incidunt qui.','Miss Maeve DuBuque II','916924',now()),
 ('2','withdraw','26625042.3200','1996-07-20','Numquam mollitia est in dicta et. Dicta aut natus fuga.','Randy Welch PhD','468675',now()),
 ('3','creditCharge','1129367.9950','1971-04-22','Ut vel aliquam tempore rem temporibus molestiae. Deserunt iste est iste. Modi libero occaecati alias aut itaque et exercitationem. Non ullam ratione et tempore earum commodi beatae sit. Atque illum velit et laboriosam.','Prof. Orval Halvorson IV','133412',now()),
 ('4','withdraw','187364.6688','2015-06-01','Enim aut labore modi et vel et. Pariatur aut dolor quibusdam sapiente natus esse. At et illo ea laudantium placeat.','Sherwood O\'Connell V','46576',now()),
@@ -3574,8 +3589,8 @@ INSERT INTO `AccountEntry` VALUES ('1','creditCharge','6.2855','1984-10-05','Deb
 ('3574','transferOut','3.0825','1983-06-23','Eum adipisci voluptatem rem. Qui tenetur amet neque. Sed sunt illum sed et delectus totam et. Aliquam voluptate quae quidem eius hic.','Cyril Cummings DVM','395451',now()),
 ('3575','debitCharge','363389.0444','1985-08-07','Molestias animi ut placeat laudantium. Optio veniam ipsam aspernatur blanditiis facilis fugiat. Adipisci sed autem ducimus nostrum. Dignissimos aut labore eius ut praesentium inventore.','Kirsten Lakin','635594',now()),
 ('3576','creditCharge','0.0000','1993-12-02','Deserunt nobis est cupiditate ullam. Consectetur est quisquam fugit vel velit. Commodi consectetur et qui velit ut.','Haskell Hansen','28343',now()),
-('3577','withdraw','7.2822','2001-12-01','Ut quos sunt illo pariatur illum provident repellat nostrum. Eaque tempore qui rerum repellat minima quia. Ea architecto omnis eius et dolor consectetur ipsam. Nulla veniam sequi sit deleniti dolor.','Cleo Simonis DDS','877826',now()); 
-INSERT INTO `AccountEntry` VALUES ('3578','debitCharge','774401.0359','2015-05-30','Minus voluptatum et fugiat dolorum. Voluptatum ea tenetur rerum voluptates et. Repellat omnis vel deleniti similique. Possimus voluptatum quibusdam temporibus odio quia vel.','Mckenna Pollich','305378',now()),
+('3577','withdraw','7.2822','2001-12-01','Ut quos sunt illo pariatur illum provident repellat nostrum. Eaque tempore qui rerum repellat minima quia. Ea architecto omnis eius et dolor consectetur ipsam. Nulla veniam sequi sit deleniti dolor.','Cleo Simonis DDS','877826',now());";
+$sql2="INSERT INTO `AccountEntry` VALUES ('3578','debitCharge','774401.0359','2015-05-30','Minus voluptatum et fugiat dolorum. Voluptatum ea tenetur rerum voluptates et. Repellat omnis vel deleniti similique. Possimus voluptatum quibusdam temporibus odio quia vel.','Mckenna Pollich','305378',now()),
 ('3579','transferIn','264.0000','1987-08-31','Illum officiis a delectus sunt accusantium dolore ut quasi. Repellat soluta aperiam quod occaecati autem vel. Optio optio est quia aspernatur magnam quam et.','Mr. Camron Gleichner PhD','28097',now()),
 ('3580','transferOut','140564.3115','1980-04-29','Est nisi nisi et et est et exercitationem. Dicta totam eos nemo explicabo perspiciatis qui quo qui. Et dolorem voluptas consequatur saepe pariatur nobis. Autem molestiae repellat ratione porro laudantium provident totam.','Prof. Austyn Rice IV','400016',now()),
 ('3581','transferOut','0.8927','2012-07-21','Expedita quidem quia repudiandae exercitationem possimus possimus odio. Cupiditate ut suscipit tempora eveniet.','Melba Macejkovic','503252',now()),
@@ -7158,8 +7173,8 @@ INSERT INTO `AccountEntry` VALUES ('3578','debitCharge','774401.0359','2015-05-3
 ('7158','creditCharge','440963867.2811','2011-07-27','Id doloribus aspernatur aperiam beatae aperiam aut et perferendis. Voluptates aut id culpa. Numquam blanditiis facilis autem et expedita ea.','Miss Name Von','29603',now()),
 ('7159','withdraw','2193962.8500','1989-12-06','Et aperiam aut non aut. Debitis quia laudantium ad recusandae placeat fugit. Quisquam est cumque distinctio dolor inventore beatae. Illum quia fugit cum vel. Voluptas id ad possimus similique blanditiis veritatis iusto fugit.','Tyrese Bahringer','613139',now()),
 ('7160','transferIn','1786661.4112','1997-01-31','Delectus voluptate molestiae deserunt est sit omnis qui error. Nihil error mollitia nihil eveniet sed doloremque vel eum. Ab aut voluptatum sequi nesciunt.','Zackary Lindgren','820670',now()),
-('7161','deposit','43686.7000','1974-12-22','Omnis et optio provident qui. Rerum commodi non molestiae sit ipsam. Ipsam rerum voluptate repellat rerum hic.','Dahlia Feeney II','614793',now()); 
-INSERT INTO `AccountEntry` VALUES ('7162','transferIn','8252052.0000','1975-06-06','Ut qui illo pariatur laboriosam. A optio consequatur earum ipsa. Omnis quia minus cum possimus voluptatum nisi ut. Reprehenderit perferendis mollitia deserunt ea repellendus.','Prof. Unique Weimann','436805',now()),
+('7161','deposit','43686.7000','1974-12-22','Omnis et optio provident qui. Rerum commodi non molestiae sit ipsam. Ipsam rerum voluptate repellat rerum hic.','Dahlia Feeney II','614793',now());";
+$sql3="INSERT INTO `AccountEntry` VALUES ('7162','transferIn','8252052.0000','1975-06-06','Ut qui illo pariatur laboriosam. A optio consequatur earum ipsa. Omnis quia minus cum possimus voluptatum nisi ut. Reprehenderit perferendis mollitia deserunt ea repellendus.','Prof. Unique Weimann','436805',now()),
 ('7163','withdraw','6.8790','1985-11-26','Autem aut qui laboriosam voluptas pariatur aperiam voluptatibus. Maxime quia reiciendis laudantium voluptatum odio impedit. Excepturi quaerat voluptas aut quos vel tempore quia. Sint et placeat non.','Lessie Pollich IV','694447',now()),
 ('7164','creditCharge','87.1098','1992-09-09','Nihil enim voluptas atque qui doloremque molestiae. Dolor dolorum eligendi esse cupiditate unde qui. Sed illum praesentium suscipit qui error omnis.','Adolfo Murray','489472',now()),
 ('7165','transferOut','0.0000','1979-05-10','Optio vitae unde nesciunt. Id quo corporis hic omnis maxime quam possimus. Minima autem qui harum corrupti.','Maybelle Windler II','408858',now()),
@@ -9997,4 +10012,28 @@ INSERT INTO `AccountEntry` VALUES ('7162','transferIn','8252052.0000','1975-06-0
 ('9997','withdraw','1.0000','1995-06-27','Blanditiis cum autem omnis sit fuga suscipit. Velit fuga cupiditate ex rerum in. Explicabo vitae voluptas est.','Carlie Feil','556773',now()),
 ('9998','debitCharge','30.5085','1983-01-01','Sed esse accusamus est qui quis dolorem. Quia ut modi qui recusandae aut officiis. Qui accusantium mollitia sunt magnam incidunt. Et cumque et fugiat dolor corrupti eius. Est soluta ipsam at et libero.','Dr. Cordell Hammes MD','557455',now()),
 ('9999','transferOut','360949717.0168','1992-09-14','Ut et animi nostrum beatae. Eveniet est quia maxime atque iste incidunt. Saepe dolor debitis occaecati quae.','Amie Conn','825251',now()),
-('10000','withdraw','1810757.1000','2009-02-15','Molestiae odio architecto perspiciatis illo quaerat quasi ducimus. Qui ipsa qui deleniti cum vero tenetur sunt. Eos sed quia autem temporibus ipsum soluta dolorum.','Maxwell Cummerata','24222',now()); 
+('10000','withdraw','1810757.1000','2009-02-15','Molestiae odio architecto perspiciatis illo quaerat quasi ducimus. Qui ipsa qui deleniti cum vero tenetur sunt. Eos sed quia autem temporibus ipsum soluta dolorum.','Maxwell Cummerata','24222',now());";
+
+
+
+if (mysqli_query($conn, $sql1)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql1 . "<br>" . mysqli_error($conn); 
+}
+
+if (mysqli_query($conn, $sql2)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql2 . "<br>" . mysqli_error($conn); 
+}
+
+if (mysqli_query($conn, $sql3)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql3 . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

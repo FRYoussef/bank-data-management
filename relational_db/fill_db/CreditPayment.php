@@ -1,4 +1,19 @@
-INSERT INTO `CreditPayment` VALUES ('1','Dolorum nihil illum amet autem beatae quia est ipsam. In exercitationem dolores nihil ipsam inventore quia ea. Asperiores modi vero in enim. Incidunt et enim reiciendis totam.','12709.3200', now()),
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `CreditPayment` VALUES ('1','Dolorum nihil illum amet autem beatae quia est ipsam. In exercitationem dolores nihil ipsam inventore quia ea. Asperiores modi vero in enim. Incidunt et enim reiciendis totam.','12709.3200', now()),
 ('2','Quo voluptatem ipsum nihil aut vel assumenda ut. Laudantium ipsa est est praesentium autem. Harum voluptatem dolores iure odit quas ut illo.','8053.9468', now()),
 ('3','Iste eius dolores praesentium hic accusamus. Nesciunt provident ipsum dolorum maiores a minus. Quod fugit voluptatem voluptas quo quia.','38.6878', now()),
 ('4','Sunt quas beatae esse sed distinctio sint fugit. Est quidem corporis fuga ut atque. Eveniet itaque adipisci aut facere. A ipsam iusto ut.','54204.7318', now()),
@@ -997,4 +1012,15 @@ INSERT INTO `CreditPayment` VALUES ('1','Dolorum nihil illum amet autem beatae q
 ('997','Et dolor laboriosam voluptatem aliquid earum fugit maxime. Tempore ab quisquam ab ut.','0.0000', now()),
 ('998','Quibusdam eligendi quibusdam sed repellat molestiae. Magni delectus eum qui harum exercitationem. Possimus architecto nesciunt et consequatur nobis facere. Voluptatibus eligendi incidunt sint soluta. Praesentium minima aut consectetur et.','64.0000', now()),
 ('999','Non ipsum et et omnis porro non deleniti. Et non natus amet ut illo.','624.4479', now()),
-('1000','Voluptatem fugiat odio non illum nemo quia reiciendis. Laborum odit ea omnis praesentium. Vero et ut doloribus eius voluptatem. Vel et dolor eius commodi aliquam adipisci ratione.','289251069.8000',now()); 
+('1000','Voluptatem fugiat odio non illum nemo quia reiciendis. Laborum odit ea omnis praesentium. Vero et ut doloribus eius voluptatem. Vel et dolor eius commodi aliquam adipisci ratione.','289251069.8000',now()); ";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

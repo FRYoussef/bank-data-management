@@ -1,4 +1,19 @@
-INSERT INTO `Account` VALUES ('1','5263693663797971','1992-03-31','0.9683','USD', now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+$sql = "INSERT INTO `Account` VALUES ('1','5263693663797971','1992-03-31','0.9683','USD', now()),
 ('2','5291257394528224','1976-11-16','21235971.3000','JPY', now()),
 ('3','372743289096967','1981-10-21','0.0000','EUR', now()),
 ('4','5559354295768073','2001-01-28','177315198.4000','EUR', now()),
@@ -997,4 +1012,13 @@ INSERT INTO `Account` VALUES ('1','5263693663797971','1992-03-31','0.9683','USD'
 ('997','4539995019861225','1976-09-27','1.7239','EUR', now()),
 ('998','345783264618531','2017-06-11','0.0000','JPY', now()),
 ('999','5569941925562202','1984-06-30','134354949.0631','EUR', now()),
-('1000','4532378290349','1981-09-28','45.4000','GBP',now()); 
+('1000','4532378290349','1981-09-28','45.4000','GBP',now());";
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+// Close coneection 
+mysqli_close($conn); 
+?>

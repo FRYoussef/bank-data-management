@@ -1,4 +1,18 @@
-INSERT INTO `Address` VALUES ('1','Paul Isle','389','5','8','w','1','1','1', now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+$sql="INSERT INTO `Address` VALUES ('1','Paul Isle','389','5','8','w','1','1','1', now()),
 ('2','Nikita Crossroad','721','','7','a','2','2','2', now()),
 ('3','Eudora Key','294','','5','l','3','3','3', now()),
 ('4','Schaden Plaza','311','','6','l','4','4','4', now()),
@@ -997,4 +1011,14 @@ INSERT INTO `Address` VALUES ('1','Paul Isle','389','5','8','w','1','1','1', now
 ('997','Emard Ville','444','','1','u','47','997','997', now()),
 ('998','Eichmann Square','639','7','3','t','48','998','998', now()),
 ('999','Carson Island','787','','6','q','49','999','999', now()),
-('1000','Nico Cape','894','','1','o','50','1000','1000',now()); 
+('1000','Nico Cape','894','','1','o','50','1000','1000',now());";
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

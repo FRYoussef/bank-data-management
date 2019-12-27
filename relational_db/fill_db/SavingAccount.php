@@ -1,4 +1,20 @@
-INSERT INTO `SavingAccount` VALUES ('1','1996-04-01',now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `SavingAccount` VALUES ('1','1996-04-01',now()),
 ('2','2017-09-05',now()),
 ('3','2014-02-01',now()),
 ('4','1979-10-05',now()),
@@ -97,4 +113,15 @@ INSERT INTO `SavingAccount` VALUES ('1','1996-04-01',now()),
 ('97','1994-02-18',now()),
 ('98','2013-10-17',now()),
 ('99','1975-12-05',now()),
-('100','1980-10-29',now()); 
+('100','1980-10-29',now()); ";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

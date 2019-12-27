@@ -1,5 +1,19 @@
 
-INSERT INTO `AddressPostCode` VALUES ('1','93095-5039', now()),
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+$sql="INSERT INTO `AddressPostCode` VALUES ('1','93095-5039', now()),
 ('2','75530-9268', now()),
 ('3','11849', now()),
 ('4','27282-2089', now()),
@@ -998,4 +1012,14 @@ INSERT INTO `AddressPostCode` VALUES ('1','93095-5039', now()),
 ('997','70855', now()),
 ('998','36545-2345', now()),
 ('999','99344', now()),
-('1000','54511-7260',now()); 
+('1000','54511-7260',now());";
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>

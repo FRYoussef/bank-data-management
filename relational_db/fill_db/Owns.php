@@ -1,4 +1,20 @@
-INSERT INTO `Owns` VALUES ('1','1','1','1',now()),
+
+<?php 
+$servername = "localhost"; 
+$username = "root"; 
+$password = "";
+$dbname = "Bank-data-management"; 
+  
+// Create connection 
+$conn = mysqli_connect( $servername, $username, $password, $dbname ); 
+  
+// Check connection 
+if ( !$conn ) { 
+    die("Connection failed: " . mysqli_connect_error()); 
+} 
+
+
+$sql="INSERT INTO `Owns` VALUES ('1','1','1','1',now()),
 ('2','2','2','2',now()),
 ('3','3','3','3',now()),
 ('4','4','4','4',now()),
@@ -997,4 +1013,15 @@ INSERT INTO `Owns` VALUES ('1','1','1','1',now()),
 ('997','997','997','997',now()),
 ('998','998','998','998',now()),
 ('999','999','999','999',now()),
-('1000','1000','1000','1000',now()); 
+('1000','1000','1000','1000',now()); ";
+
+
+if (mysqli_query($conn, $sql)) { 
+    echo "New record created successfully"; 
+} else { 
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn); 
+}
+
+// Close coneection 
+mysqli_close($conn); 
+?>
