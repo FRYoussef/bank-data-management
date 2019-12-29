@@ -60,6 +60,12 @@ CREATE TABLE `AddressProvince` (
   PRIMARY KEY (`addressProvId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+CREATE TABLE `AddressCountry` (
+  `addressCountryId` int(6) NOT NULL AUTO_INCREMENT,
+  `province` text COLLATE utf8_spanish_ci NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  PRIMARY KEY (`addressProvId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `Address` (
   `addressId` int(6) NOT NULL AUTO_INCREMENT ,
@@ -71,6 +77,7 @@ CREATE TABLE `Address` (
   `addressProvId` int(6) NOT NULL,
   `addressPCId` int(6) NOT NULL,
   `addressLocId` int(6) NOT NULL,
+  `addressCountryId` int(6) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`addressId`),
   FOREIGN KEY (`addressProvId`) 
@@ -81,6 +88,9 @@ CREATE TABLE `Address` (
     ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`addressPCId`) 
     REFERENCES `AddressPostCode`(`addressPCId`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`addressCountryId`) 
+    REFERENCES `AddressCountry`(`addressCountryId`)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -137,7 +147,7 @@ CREATE TABLE `Charge` (
 
 
 CREATE TABLE `Credit` (
-  `cardId` int(6) NOT NULL AUTO_INCREMENT ,
+  `cardId` int(6) NOT NULL,
   `boundary` double(18,4) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`cardId`),
@@ -181,7 +191,7 @@ CREATE TABLE `CreditPaymentCharge` (
 
 
 CREATE TABLE `Debit` (
-  `cardId` int(6) NOT NULL AUTO_INCREMENT ,
+  `cardId` int(6) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`cardId`),
   FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
