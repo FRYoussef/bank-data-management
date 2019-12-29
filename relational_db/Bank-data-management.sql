@@ -64,7 +64,7 @@ CREATE TABLE `AddressCountry` (
   `addressCountryId` int(6) NOT NULL AUTO_INCREMENT,
   `province` text COLLATE utf8_spanish_ci NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  PRIMARY KEY (`AddressCountry`)
+  PRIMARY KEY (`addressCountryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `Address` (
