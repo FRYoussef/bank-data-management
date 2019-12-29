@@ -140,7 +140,9 @@ CREATE TABLE `Credit` (
   `cardId` int(6) NOT NULL AUTO_INCREMENT ,
   `boundary` double(18,4) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  PRIMARY KEY (`cardId`)
+  PRIMARY KEY (`cardId`),
+  FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 
@@ -181,7 +183,9 @@ CREATE TABLE `CreditPaymentCharge` (
 CREATE TABLE `Debit` (
   `cardId` int(6) NOT NULL AUTO_INCREMENT ,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  PRIMARY KEY (`cardId`)
+  PRIMARY KEY (`cardId`),
+  FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
+    ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 

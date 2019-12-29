@@ -20,8 +20,23 @@ if ( !$transConn) {
 
 
 //Get transactional data
-$query = "";
+$query =    "SELECT Product.productId AS idProduct, Product.timestamp AS sellDate, 
+            Person.dateOfBirth AS idCostumerBirthday, AddressLocality.locality AS city, AddressPostCode.postCode AS postcode,
+            AddressProvince.province AS region, Person.salary AS salary, Person.gender AS gender, Person.personId AS idCostumer
+            FROM Product 
+            INNER JOIN Owns 
+                ON Product.productId=Owns.productId
+            INNER JOIN Person 
+                ON Person.personId=Owns.personId
+            INNER JOIN Address
+                ON Person.addressId=Address.addressId
+            INNER JOIN AddressLocality 
+                ON Address.addressLocId=AddressLocality.addressLocId
+            INNER JOIN AddressPostCode INNER JOIN AddressProvince
+                ON Address.addressProvId=AddressProvince.addressProvId
+            ";
 $result = mysqli_query($transConn, $query);
+
 
 
 mysqli_close($transConn);
