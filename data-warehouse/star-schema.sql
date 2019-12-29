@@ -72,7 +72,8 @@ CREATE TABLE `dimproduct` (
 
 CREATE TABLE `dimproducttype` (
   `idType` int(6) NOT NULL,
-  `type` enum('product','account','loan''creditCardLoan','financialAsset') NOT NULL
+  `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL,
+  `mandatory` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
