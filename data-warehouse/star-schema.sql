@@ -84,7 +84,7 @@ CREATE TABLE `dimproducttype` (
 CREATE TABLE `factsells` (
   `idProduct` int(6) NOT NULL,
   `idProductType` int(6) NOT NULL,
-  `isSellDate` int(6) NOT NULL,
+  `idSellDate` int(6) NOT NULL,
   `idCustomerBirthDate` int(6) NOT NULL,
   `idCustomerLocation` int(6) NOT NULL,
   `salary` double(6,2) NOT NULL,
@@ -129,7 +129,7 @@ ALTER TABLE `dimproducttype`
 ALTER TABLE `factsells`
   ADD KEY `fk_idProduct` (`idProduct`),
   ADD KEY `fk_idProductType` (`idProductType`),
-  ADD KEY `fk_idSellDate` (`isSellDate`),
+  ADD KEY `fk_idSellDate` (`idSellDate`),
   ADD KEY `fk_idCustomerBirthDate` (`idCustomerBirthDate`),
   ADD KEY `fk_idCustomerLocation` (`idCustomerLocation`);
 
@@ -173,7 +173,7 @@ ALTER TABLE `factsells`
   ADD CONSTRAINT `fk_idCustomerLocation` FOREIGN KEY (`idCustomerLocation`) REFERENCES `dimcustomerlocation` (`idLocation`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idProduct` FOREIGN KEY (`idProduct`) REFERENCES `dimproduct` (`idProduct`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idProductType` FOREIGN KEY (`idProductType`) REFERENCES `dimproducttype` (`idType`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_idSellDate` FOREIGN KEY (`isSellDate`) REFERENCES `dimdate` (`idDate`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_idSellDate` FOREIGN KEY (`idSellDate`) REFERENCES `dimdate` (`idDate`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
