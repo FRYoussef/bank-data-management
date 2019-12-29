@@ -70,12 +70,17 @@ CREATE TABLE `dimproduct` (
 
 
 
-CREATE TABLE `dimproducttype` (
+CREATE TABLE `dimFirstProductType` (
   `idType` int(6) NOT NULL,
-  `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL,
-  `mandatory` int(1) NOT NULL
+  `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
+CREATE TABLE `dimSecondProductType` (
+  `idType` int(6) NOT NULL,
+  `type` enum('RequiredProduct','OptionalProduct') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -84,7 +89,8 @@ CREATE TABLE `dimproducttype` (
 
 CREATE TABLE `factsells` (
   `idProduct` int(6) NOT NULL,
-  `idProductType` int(6) NOT NULL,
+  `idFirstProductType` int(6) NOT NULL,
+  `idSecondProductType` int(6) NOT NULL,
   `idSellDate` int(6) NOT NULL,
   `idCustomerBirthDate` int(6) NOT NULL,
   `idCustomerLocation` int(6) NOT NULL,
@@ -121,15 +127,19 @@ ALTER TABLE `dimproduct`
 
 
 
-ALTER TABLE `dimproducttype`
+ALTER TABLE `dimFirstProductType`
   ADD PRIMARY KEY (`idType`);
 
+
+ALTER TABLE `dimSecondProductType`
+  ADD PRIMARY KEY (`idType`);
 
 
 
 ALTER TABLE `factsells`
   ADD KEY `fk_idProduct` (`idProduct`),
-  ADD KEY `fk_idProductType` (`idProductType`),
+  ADD KEY `fk_idFirstProductType` (`idFirstProductType`),
+  ADD KEY `fk_idSecondProductType` (`idSecondProductType`),
   ADD KEY `fk_idSellDate` (`idSellDate`),
   ADD KEY `fk_idCustomerBirthDate` (`idCustomerBirthDate`),
   ADD KEY `fk_idCustomerLocation` (`idCustomerLocation`);
@@ -159,10 +169,12 @@ ALTER TABLE `dimproduct`
 
 
 
-ALTER TABLE `dimproducttype`
+ALTER TABLE `dimFirstProductType`
   MODIFY `idType` int(6) NOT NULL AUTO_INCREMENT;
 
 
+ALTER TABLE `dimSecondProductType`
+  MODIFY `idType` int(6) NOT NULL AUTO_INCREMENT;
 
 
 
@@ -173,10 +185,7 @@ ALTER TABLE `factsells`
   ADD CONSTRAINT `fk_idCustomerBirthDate` FOREIGN KEY (`idCustomerBirthDate`) REFERENCES `dimdate` (`idDate`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idCustomerLocation` FOREIGN KEY (`idCustomerLocation`) REFERENCES `dimcustomerlocation` (`idLocation`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idProduct` FOREIGN KEY (`idProduct`) REFERENCES `dimproduct` (`idProduct`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_idProductType` FOREIGN KEY (`idProductType`) REFERENCES `dimproducttype` (`idType`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_idFirstProductType` FOREIGN KEY (`idFirstProductType`) REFERENCES `dimFirstProductType` (`idType`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_idSecondProductType` FOREIGN KEY (`idSecondProductType`) REFERENCES `dimSecondProductType` (`idType`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_idSellDate` FOREIGN KEY (`idSellDate`) REFERENCES `dimdate` (`idDate`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
