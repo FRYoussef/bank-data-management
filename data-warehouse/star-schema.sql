@@ -13,11 +13,6 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 
 
 
@@ -29,7 +24,7 @@ SET time_zone = "+00:00";
 
 
 CREATE TABLE `dimcustomerlocation` (
-  `idLocation` int(6) NOT NULL,
+  `idLocation` int(6) NOT NULL  AUTO_INCREMENT ,
   `postcode` int(5) NOT NULL,
   `city` text NOT NULL,
   `region` int(20) NOT NULL,
@@ -43,7 +38,7 @@ CREATE TABLE `dimcustomerlocation` (
 
 
 CREATE TABLE `dimdate` (
-  `idDate` int(6) NOT NULL,
+  `idDate` int(6) NOT NULL  AUTO_INCREMENT ,
   `day` int(2) NOT NULL,
   `month` int(2) NOT NULL,
   `year` int(4) NOT NULL
@@ -71,14 +66,14 @@ CREATE TABLE `dimproduct` (
 
 
 CREATE TABLE `dimFirstProductType` (
-  `idType` int(6) NOT NULL,
+  `idType` int(6) NOT NULL  AUTO_INCREMENT,
   `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
 CREATE TABLE `dimSecondProductType` (
-  `idType` int(6) NOT NULL,
+  `idType` int(6) NOT NULL  AUTO_INCREMENT,
   `type` enum('RequiredProduct','OptionalProduct') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
