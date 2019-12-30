@@ -22,7 +22,7 @@ CREATE TABLE `AccountEntry` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 CREATE TABLE `AccountOperation` (
-  `entryId` int(6) NOT NULL AUTO_INCREMENT ,
+  `entryId` int(6) NOT NULL,
   `accountId` int(6) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`entryId`),
@@ -62,7 +62,7 @@ CREATE TABLE `AddressProvince` (
 
 CREATE TABLE `AddressCountry` (
   `addressCountryId` int(6) NOT NULL AUTO_INCREMENT,
-  `province` text COLLATE utf8_spanish_ci NOT NULL,
+  `country` text COLLATE utf8_spanish_ci NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`addressCountryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -284,7 +284,7 @@ CREATE TABLE `IsAutorized` (
 CREATE TABLE `Loan` (
   `loadId` int(6) NOT NULL AUTO_INCREMENT ,
   `remainingAccount` double(18,4) NOT NULL,
-  `cardId` int(6) NOT NULL,
+  `cardId` int(6) NULL,
   `productId` int(6) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`loadId`),

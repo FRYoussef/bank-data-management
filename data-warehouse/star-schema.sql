@@ -25,10 +25,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `dimcustomerlocation` (
   `idLocation` int(6) NOT NULL  AUTO_INCREMENT ,
-  `postcode` int(5) NOT NULL,
+  `postcode` text(20) NOT NULL,
   `city` text NOT NULL,
-  `region` int(20) NOT NULL,
-  `country` int(20) NOT NULL
+  `region` text(20) NOT NULL,
+  `country` text(20) NOT NULL,
+  PRIMARY KEY (`idLocation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -41,7 +42,8 @@ CREATE TABLE `dimdate` (
   `idDate` int(6) NOT NULL  AUTO_INCREMENT ,
   `day` int(2) NOT NULL,
   `month` int(2) NOT NULL,
-  `year` int(4) NOT NULL
+  `year` int(4) NOT NULL,
+  PRIMARY KEY (`idDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -67,14 +69,16 @@ CREATE TABLE `dimproduct` (
 
 CREATE TABLE `dimFirstProductType` (
   `idType` int(6) NOT NULL  AUTO_INCREMENT,
-  `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL
+  `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL,
+  PRIMARY KEY (`idType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
 CREATE TABLE `dimSecondProductType` (
   `idType` int(6) NOT NULL  AUTO_INCREMENT,
-  `type` enum('RequiredProduct','OptionalProduct') NOT NULL
+  `type` enum('RequiredProduct','OptionalProduct') NOT NULL,
+  PRIMARY KEY (`idType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -104,30 +108,12 @@ CREATE TABLE `factsells` (
 
 
 
-ALTER TABLE `dimcustomerlocation`
-  ADD PRIMARY KEY (`idLocation`);
-
-
-
-
-ALTER TABLE `dimdate`
-  ADD PRIMARY KEY (`idDate`);
 
 
 
 
 ALTER TABLE `dimproduct`
   ADD PRIMARY KEY (`idProduct`);
-
-
-
-
-ALTER TABLE `dimFirstProductType`
-  ADD PRIMARY KEY (`idType`);
-
-
-ALTER TABLE `dimSecondProductType`
-  ADD PRIMARY KEY (`idType`);
 
 
 
