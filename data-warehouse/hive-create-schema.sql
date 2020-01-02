@@ -2,7 +2,9 @@ CREATE DATABASE IF NOT EXISTS bankDataWarehouse;
 
 CREATE TABLE IF NOT EXISTS factSells (
     productType STRING,
-    productCategory STRING,
+    productFirstCategory STRING,
+    productSecondCategory STRING,
+    productTransactionalId INT,
     productInvestment DOUBLE,
     currency STRING,
     interestType STRING,
