@@ -24,7 +24,7 @@ include 'Person.php';
 include 'IsAutorized.php'; 
 include 'Loan.php'; 
 include 'Owns.php'; 
-include 'SavingAccount.php';
+include 'SavingsAccount.php';
 
 
 
@@ -54,7 +54,7 @@ $output .= shell_exec('php Person.php') . "\n" ;
 $output .= shell_exec('php IsAutorized.php') . "\n" ;
 $output .= shell_exec('php Loan.php') . "\n" ;
 $output .= shell_exec('php Owns.php') . "\n" ;
-$output .= shell_exec('php SavingAccount.php') . "\n" ;
+$output .= shell_exec('php SavingsAccount.php') . "\n" ;
 
 echo "<pre>$output</pre>";
 

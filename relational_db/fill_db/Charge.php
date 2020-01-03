@@ -4,7 +4,7 @@
 $servername = "localhost"; 
 $username = "root"; 
 $password = "";
-$dbname = "Bank-data-management"; 
+$dbname = "BankDataManagement"; 
   
 // Create connection 
 $conn = mysqli_connect( $servername, $username, $password, $dbname ); 

@@ -3,7 +3,7 @@
 $servername = "localhost"; 
 $username = "root"; 
 $password = "";
-$dbname = "Bank-data-management"; 
+$dbname = "BankDataManagement"; 
   
 // Create connection 
 $conn = mysqli_connect( $servername, $username, $password, $dbname ); 
@@ -16,9 +16,9 @@ if ( !$conn ) {
 //From 1 to 10
 $sql="INSERT INTO `FinancialAsset` VALUES (NULL,'10','investmentFund','1',now()),
 (NULL,'4','investmentFund','2',now()),
-(NULL,'1','backDeposit','3',now()),
+(NULL,'1','bankDeposit','3',now()),
 (NULL,'1','investmentFund','4',now()),
-(NULL,'2','backDeposit','5',now()),
+(NULL,'2','bankDeposit','5',now()),
 (NULL,'8','investmentFund','6',now()),
 (NULL,'6','pensionFund','7',now())";
 
