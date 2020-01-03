@@ -54,11 +54,12 @@ CREATE TABLE `dimdate` (
 
 CREATE TABLE `dimproduct` (
   `idProduct` int(6) NOT NULL,
+  `transactionalId` int(6) NOT NULL,
   `product` enum('depositAccount','savingsAccount','loan','investmentFund','bankDeposit','pensionFund','stockExchange') NOT NULL,
-  `investment` double(6,2) NOT NULL,
-  `currency` enum('Dolar','Euro','Yen','Libra','Franco') NOT NULL,
+  `investment` double(18,4) NOT NULL,
+  `currency` enum('EUR','JPY','USD','GBP') NOT NULL,
   `interestType` enum('fix','variable') NOT NULL,
-  `interest` double(3,2) NOT NULL
+  `interest` double(2,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -69,7 +70,7 @@ CREATE TABLE `dimproduct` (
 
 CREATE TABLE `dimFirstProductType` (
   `idType` int(6) NOT NULL  AUTO_INCREMENT,
-  `type` enum('product','account','loan''creditCardLoan','financialAsset', 'debitCard') NOT NULL,
+  `type` enum('product','account','loan','creditCardLoan','financialAsset', 'debitCard') NOT NULL,
   PRIMARY KEY (`idType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
