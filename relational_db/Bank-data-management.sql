@@ -248,7 +248,7 @@ CREATE TABLE `Product` (
 CREATE TABLE `FinancialAsset` (
   `assetId` int(6) NOT NULL AUTO_INCREMENT ,
   `risk` int(11) NOT NULL CHECK (`risk` >= 1 AND `risk` <= 10),
-  `type` enum('investmentFund','pensionFund','backDeposit','stockExchange') COLLATE utf8_spanish_ci NOT NULL,
+  `type` enum('investmentFund','pensionFund','bankDeposit','stockExchange') COLLATE utf8_spanish_ci NOT NULL,
   `productId` int(6) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`assetId`),
@@ -282,12 +282,12 @@ CREATE TABLE `IsAutorized` (
 
 
 CREATE TABLE `Loan` (
-  `loadId` int(6) NOT NULL AUTO_INCREMENT ,
+  `loanId` int(6) NOT NULL AUTO_INCREMENT ,
   `remainingAccount` double(18,4) NOT NULL,
   `cardId` int(6) NULL,
   `productId` int(6) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  PRIMARY KEY (`loadId`),
+  PRIMARY KEY (`loanId`),
   FOREIGN KEY (`cardId`)
     REFERENCES `Card`(`cardId`)
     ON DELETE CASCADE ON UPDATE CASCADE,
@@ -320,7 +320,7 @@ CREATE TABLE `Owns` (
 
 
 
-CREATE TABLE `SavingAccount` (
+CREATE TABLE `SavingsAccount` (
   `accountId` int(6) NOT NULL AUTO_INCREMENT ,
   `timeLimit` date NOT NULL,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
