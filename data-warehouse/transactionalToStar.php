@@ -41,12 +41,12 @@ $query =    "INSERT INTO StarSchema.dimcustomerlocation (postcode, city, region,
                 ON Address.addressProvId=AddressProvince.addressProvId
             INNER JOIN AddressCountry
                 ON Address.addressCountryId=AddressCountry.addressCountryId
-            
+            WHERE DATEDIFF(NOW(), Address.timestamp) < 15
             ";
 
 $result = mysqli_query($transConn, $query);
 if(!$result){
-    echo mysqli_error($transConn);
+    echo "FILL LOCATION ERROR: " . mysqli_error($transConn);
 }
 
 
@@ -58,12 +58,14 @@ $queryDA =  "SELECT DISTINCT DepositAccount.accountId AS transactionalId, 'depos
             Account.amount AS investment, Account.currency AS currency, 'fix' AS interestType, '0' AS interest
             FROM Account
             INNER JOIN DepositAccount ON Account.accountId = DepositAccount.accountId
+            WHERE DATEDIFF(NOW(), DepositAccount.timestamp) < 15
             ";
 
 $querySA =  "SELECT DISTINCT SavingsAccount.accountId AS transactionalId, 'savingsAccount' AS product, 
             Account.amount AS investment, Account.currency AS currency, 'fix' AS interestType, '0' AS interest
             FROM Account
             INNER JOIN SavingsAccount ON Account.accountId = SavingsAccount.accountId
+            WHERE DATEDIFF(NOW(), SavingsAccount.timestamp) < 15
             ";
 $queryLoan =   "SELECT DISTINCT Loan.productId AS transactionalId, 'loan' AS product,
                Product.totalAmount AS investment, Account.currency AS 'currency', Interest.interest AS 'interest', IF (Interest.isVariable='1', 'variable', 'fix') AS 'interestType'
@@ -72,6 +74,7 @@ $queryLoan =   "SELECT DISTINCT Loan.productId AS transactionalId, 'loan' AS pro
                INNER JOIN Account ON Owns.accountId = Account.accountId
                INNER JOIN Interest ON Interest.interestId = Owns.interestId
                INNER JOIN Product ON Product.productId = Loan.productId
+               WHERE DATEDIFF(NOW(), Loan.timestamp) < 15
                ";
 
 $queryFA =  "SELECT DISTINCT FinancialAsset.productId AS transactionalId, FinancialAsset.type AS product,
@@ -81,6 +84,7 @@ $queryFA =  "SELECT DISTINCT FinancialAsset.productId AS transactionalId, Financ
             INNER JOIN Account ON Owns.accountId = Account.accountId
             INNER JOIN Interest ON Interest.interestId = Owns.interestId
             INNER JOIN Product ON Product.productId = FinancialAsset.productId
+            WHERE DATEDIFF(NOW(), FinancialAsset.timestamp) < 15
             ";
 
 $resultDA = mysqli_query($transConn, $queryDA);
@@ -91,7 +95,7 @@ $resultFA = mysqli_query($transConn, $queryFA);
 
 
 if(!$resultDA or !$resultSA or !$resultLoan or !$resultFA){
-    echo mysqli_error($transConn);
+    echo "SELECT PRODUCTS ERROR: " . mysqli_error($transConn);
 }
 else{
     $insert = "INSERT INTO `dimproduct` VALUES";
@@ -173,34 +177,41 @@ else{
 $insert .= ";";
 
 
-if (mysqli_query($starConn, $insert)) { 
-    echo "dim product filled". "<br>". "<br>"; 
-} else { 
-    echo "Error: " . "<br>" . mysqli_error($starConn); 
+if ($insert != "INSERT INTO `dimproduct` VALUES;"){
+    if (mysqli_query($starConn, $insert)) { 
+        echo "dim product filled". "<br>". "<br>"; 
+    } else { 
+        echo "FILL PRODUCTS ERROR: " . mysqli_error($starConn); 
+    }
 }
-
 
 //------------------------- FILL DIM DATE -----------------------
 
 $queryBD =  "SELECT DISTINCT Person.dateOfBirth AS date
             FROM Person
             INNER JOIN Owns ON Person.personId = Owns.personId
+            WHERE DATEDIFF(NOW(), Person.timestamp) < 15
+
             ";
 
 $resultBD = mysqli_query($transConn, $queryBD);
 
 $querysell =    "SELECT DISTINCT Owns.timestamp AS date
                 FROM Owns
+                WHERE DATEDIFF(NOW(), Owns.timestamp) < 15
+
                 ";
 $resultsell = mysqli_query($transConn, $querysell);
 
 $queryaccount =    "SELECT DISTINCT Account.timestamp AS date
             FROM Account
+            WHERE DATEDIFF(NOW(), Account.timestamp) < 15
+
             ";
 $resultaccount = mysqli_query($transConn, $queryaccount);
 
 if(!$resultBD or !$resultsell or !$resultaccount){
-    echo mysqli_error($transConn);
+    echo "SELECT DATE ERROR: " . mysqli_error($transConn);
 }
 else{
     $insert = "INSERT IGNORE INTO `dimdate` VALUES";
@@ -253,31 +264,38 @@ else{
 }
 $insert .= ";";
 
-if (mysqli_query($starConn, $insert)) { 
-    echo "dim date filled". "<br>". "<br>"; 
-} else { 
-    echo "Error: " . "<br>" . mysqli_error($starConn); 
+if ($insert != "INSERT IGNORE INTO `dimdate` VALUES;"){
+    if (mysqli_query($starConn, $insert)) { 
+        echo "dim date filled". "<br>". "<br>"; 
+    } else { 
+        echo "FILL DATE ERROR: " . mysqli_error($starConn); 
+    }
 }
 
 
 //------------------------- FILL 1ST PRODUCT TYPE -----------------------
 
-$insert = "INSERT INTO `dimFirstProductType` VALUES (NULL, 'account'),(NULL, 'loan'), (NULL, 'creditCardLoan'), (NULL, 'financialAsset')";
+$insert = "INSERT INTO `dimFirstProductType` VALUES (NULL, 'account'),(NULL, 'loan'), (NULL, 'creditCardLoan'), (NULL, 'financialAsset')
+           
+            ";
 
 if (mysqli_query($starConn, $insert)) { 
     echo "dim FirstProductType filled". "<br>". "<br>"; 
 } else { 
-    echo "Error: " . "<br>" . mysqli_error($starConn); 
+    echo "ERROR FILL 1ST TYPE" . mysqli_error($starConn); 
 }
 
 //------------------------- FILL 2ND PRODUCT TYPE -----------------------
 
-$insert = "INSERT INTO `dimSecondProductType` VALUES (NULL, 'RequiredProduct'), (NULL, 'OptionalProduct')";
+$insert = "INSERT INTO `dimSecondProductType` VALUES (NULL, 'RequiredProduct'), (NULL, 'OptionalProduct')
+                   
+                   
+    ";
 
 if (mysqli_query($starConn, $insert)) { 
     echo "dim SecondProductType filled". "<br>". "<br>"; 
 } else { 
-    echo "Error: " . "<br>" . mysqli_error($starConn); 
+    echo "ERROR FILL 2ND TYPE"  . mysqli_error($starConn); 
 }
  
 
@@ -561,13 +579,15 @@ else{
         
     }
 }
+if ($insert != "INSERT IGNORE INTO `factsells` VALUES;"){
 
-if(!mysqli_query($starConn, $insert)){
-    echo mysqli_error($transConn);
-    echo mysqli_error($starConn);
-}
-else{
-    echo "ok";
+    if(!mysqli_query($starConn, $insert)){
+        echo mysqli_error($transConn);
+        echo mysqli_error($starConn);
+    }
+    else{
+        echo "ok";
+    }
 }
 
 
