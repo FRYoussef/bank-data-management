@@ -94,12 +94,12 @@ CREATE TABLE `factsells` (
   `idSellDate` int(6) NOT NULL,
   `idCustomerBirthDate` int(6) NOT NULL,
   `idCustomerLocation` int(6) NOT NULL,
-  `salary` double(6,2) NOT NULL,
+  `salary` double(10,2) NOT NULL,
   `gender` enum('male','female') NOT NULL,
   `idCustomer` int(6) NOT NULL,
   `unitsSold` int(6) NOT NULL,
-  `revenue` double(10,2) NOT NULL,
-  `customerType` text NOT NULL
+  `revenue` double(100,2) NOT NULL,
+  `customerType` text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
