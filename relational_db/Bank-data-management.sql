@@ -220,7 +220,7 @@ CREATE TABLE `Person` (
   `salary` double(10,2) NOT NULL,
   `dateOfBirth` date NOT NULL,
   `email` text COLLATE utf8_spanish_ci NOT NULL,
-  `gender` enum('mujer','hombre','otro') COLLATE utf8_spanish_ci NOT NULL,
+  `gender` enum('female','male') COLLATE utf8_spanish_ci NOT NULL,
   `phoneNumber` text COLLATE utf8_spanish_ci NOT NULL,
   `identityNumber` text COLLATE utf8_spanish_ci NOT NULL,
   `digitalSignature` int(6) NULL,
