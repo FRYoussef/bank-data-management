@@ -390,7 +390,7 @@ $queryloan =    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSchema
                 AND AddressCountry.country = StarSchema.dimcustomerlocation.country
             INNER JOIN StarSchema.dimFirstProductType ON StarSchema.dimFirstProductType.type = 'loan'
             INNER JOIN StarSchema.dimSecondProductType ON StarSchema.dimSecondProductType.type = 'OptionalProduct'
-                WHERE Loan.cardId IS NOT NULL AND StarSchema.dimproduct.product='loan'
+                WHERE Loan.cardId IS NULL AND StarSchema.dimproduct.product='loan'
 
             "; 
 
@@ -416,7 +416,7 @@ INNER JOIN StarSchema.dimcustomerlocation ON
     AND AddressCountry.country = StarSchema.dimcustomerlocation.country
 INNER JOIN StarSchema.dimFirstProductType ON StarSchema.dimFirstProductType.type = 'creditCardLoan'
 INNER JOIN StarSchema.dimSecondProductType ON StarSchema.dimSecondProductType.type = 'OptionalProduct'
-    WHERE Loan.cardId IS NULL AND StarSchema.dimproduct.product='loan'
+    WHERE Loan.cardId IS NOT NULL AND StarSchema.dimproduct.product='loan'
 "; 
 
 
