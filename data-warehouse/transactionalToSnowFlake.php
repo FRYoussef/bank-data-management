@@ -22,8 +22,8 @@ $queryYear1="INSERT IGNORE INTO SnowFlake.dimyear (year)
     SELECT DISTINCT SUBSTR(y.dateOfBirth, 1, 4)
     FROM Person y
     WHERE NOT EXISTS (
-    SELECT * FROM SnowFlake.dimyear WHERE SnowFlake.dimyear.year = SUBSTR(y.timestamp, 1, 4)
-)
+    SELECT * FROM SnowFlake.dimyear WHERE SnowFlake.dimyear.year = SUBSTR(y.timestamp, 1, 4)  
+    ) AND DATEDIFF(NOW(), y.timestamp) < 15
     
    
 ";
@@ -33,7 +33,7 @@ $queryYear3="INSERT IGNORE INTO SnowFlake.dimyear (year)
     FROM BankDataManagement.Account y
     WHERE NOT EXISTS (
     SELECT * FROM SnowFlake.dimyear WHERE SnowFlake.dimyear.year = SUBSTR(y.timestamp, 1, 4)
-)
+    ) AND DATEDIFF(NOW(), y.timestamp) < 15
     
     
    
@@ -44,7 +44,8 @@ SELECT DISTINCT SUBSTR(y.timestamp, 1, 4)
 FROM Owns y
 WHERE NOT EXISTS (
     SELECT * FROM SnowFlake.dimyear WHERE SnowFlake.dimyear.year = SUBSTR(y.timestamp, 1, 4)
-)";
+) AND DATEDIFF(NOW(), y.timestamp) < 15
+";
 $queryMonthAccount="INSERT IGNORE INTO SnowFlake.dimmonth (month, idYear)
     SELECT DISTINCT SUBSTR(m.timestamp, 6, 2), y.idYear
     FROM BankDataManagement.Account m
@@ -53,7 +54,7 @@ $queryMonthAccount="INSERT IGNORE INTO SnowFlake.dimmonth (month, idYear)
         SELECT * 
         FROM SnowFlake.dimmonth
         WHERE SnowFlake.dimmonth.month = SUBSTR(m.timestamp, 6, 2) AND SnowFlake.dimmonth.idYear=y.idYear
-    )
+    ) AND DATEDIFF(NOW(), m.timestamp) < 15
 ";
 
 $queryMonthPerson="INSERT IGNORE INTO SnowFlake.dimmonth (month, idYear)
@@ -64,7 +65,7 @@ WHERE NOT EXISTS (
     SELECT * 
     FROM SnowFlake.dimmonth
     WHERE SnowFlake.dimmonth.month = SUBSTR(m.dateOfBirth, 6, 2) AND SnowFlake.dimmonth.idYear=y.idYear
-)
+)AND DATEDIFF(NOW(), m.timestamp) < 15
 
 ";
 
@@ -76,7 +77,7 @@ WHERE NOT EXISTS (
     SELECT * 
     FROM SnowFlake.dimmonth
     WHERE SnowFlake.dimmonth.month = SUBSTR(m.timestamp, 6, 2) AND SnowFlake.dimmonth.idYear=y.idYear
-)
+) AND DATEDIFF(NOW(), m.timestamp) < 15
         ";
 
 
@@ -89,7 +90,7 @@ $queryDayAccount="INSERT INTO SnowFlake.dimday (day, idMonth)
     SELECT * 
     FROM SnowFlake.dimday
     WHERE SnowFlake.dimday.day = SUBSTR(d.timestamp, 9, 2) AND SnowFlake.dimday.idMonth=m.idMonth
-)
+) AND DATEDIFF(NOW(), d.timestamp) < 15
 ";
 
 $queryDayPerson="INSERT INTO SnowFlake.dimday (day, idMonth)
@@ -101,7 +102,7 @@ SELECT DISTINCT SUBSTR(d.dateOfBirth, 9, 2), m.idMonth
     SELECT * 
     FROM SnowFlake.dimday
     WHERE SnowFlake.dimday.day = SUBSTR(d.timestamp, 9, 2) AND SnowFlake.dimday.idMonth=m.idMonth
-)
+) AND DATEDIFF(NOW(), d.timestamp) < 15
 ";
 $queryDayOwns="INSERT INTO SnowFlake.dimday (day, idMonth)
 SELECT DISTINCT SUBSTR(d.timestamp, 9, 2), m.idMonth
@@ -112,7 +113,7 @@ SELECT DISTINCT SUBSTR(d.timestamp, 9, 2), m.idMonth
     SELECT * 
     FROM SnowFlake.dimday
     WHERE SnowFlake.dimday.day = SUBSTR(d.timestamp, 9, 2) AND SnowFlake.dimday.idMonth=m.idMonth
-)
+) AND DATEDIFF(NOW(), d.timestamp) < 15
 ";
 
 
@@ -125,8 +126,9 @@ else{
 }
 
 $queryCountry="INSERT IGNORE INTO SnowFlake.dimcountry (country)
-SELECT DISTINCT AddressCountry.country
-    FROM BankDataManagement.AddressCountry
+SELECT DISTINCT a.country
+    FROM BankDataManagement.AddressCountry a
+    WHERE DATEDIFF(NOW(), a.timestamp) < 15
  ";
  $queryRegion="INSERT IGNORE INTO SnowFlake.dimregion (region, idCountry)
  SELECT DISTINCT p.province, c.idCountry
@@ -138,7 +140,7 @@ SELECT DISTINCT AddressCountry.country
         SELECT *
         FROM SnowFlake.dimregion
         WHERE SnowFlake.dimregion.region=p.province AND SnowFlake.dimregion.idCountry = c.idCountry
-    )
+    ) AND DATEDIFF(NOW(), p.timestamp) < 15
   ";
 $queryCity="INSERT IGNORE INTO SnowFlake.dimcity (city, idRegion)
 SELECT DISTINCT p.locality, r.idRegion
@@ -150,7 +152,7 @@ SELECT DISTINCT p.locality, r.idRegion
         SELECT *
         FROM SnowFlake.dimcity
         WHERE SnowFlake.dimcity.city=p.locality AND SnowFlake.dimcity.idRegion = r.idRegion
-    )
+    ) AND DATEDIFF(NOW(), p.timestamp) < 15
 ";
 $queryPC="INSERT IGNORE INTO SnowFlake.dimpost (postCode, idCity)
 SELECT DISTINCT p.postCode, SnowFlake.dimcity.idCity
@@ -162,7 +164,7 @@ SELECT DISTINCT p.postCode, SnowFlake.dimcity.idCity
         SELECT *
         FROM SnowFlake.dimpost
         WHERE SnowFlake.dimpost.postcode=p.postCode
-    )
+    ) AND DATEDIFF(NOW(), p.timestamp) < 15
 ";
 
 
@@ -175,8 +177,9 @@ else {
 }
 
 $querySalary=" INSERT IGNORE INTO SnowFlake.dimsalary (salary)
-SELECT DISTINCT Person.salary
-    FROM BankDataManagement.Person
+SELECT DISTINCT p.salary
+    FROM BankDataManagement.Person p
+    WHERE DATEDIFF(NOW(), p.timestamp) < 15
 ";
 
 
@@ -191,8 +194,9 @@ else {
 
 
 $queryGender="INSERT IGNORE INTO SnowFlake.dimgender (gender)
-    SELECT DISTINCT Person.gender
-        FROM BankDataManagement.Person
+    SELECT DISTINCT p.gender
+        FROM BankDataManagement.Person p
+        WHERE DATEDIFF(NOW(), p.timestamp) < 15
 ";
 
 if(!mysqli_query($transConn,$queryGender)){
@@ -390,7 +394,8 @@ $queryCustomer ="INSERT INTO SnowFlake.dimcustomer (idTransactionalCustomer, idB
     JOIN SnowFlake.dimgender ON p.gender = SnowFlake.dimgender.gender
     WHERE NOT EXISTS (
         SELECT * FROM SnowFlake.dimcustomer WHERE  SnowFlake.dimcustomer.idTransactionalCustomer = p.personId
-    )
+    ) AND DATEDIFF(NOW(), p.timestamp) < 15
+    GROUP BY p.personId;
 ";
 
 if(!mysqli_query($transConn,$queryCustomer)){
