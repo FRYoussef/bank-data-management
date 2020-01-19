@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS bankDataWarehouse;
 
-CREATE TABLE IF NOT EXISTS factSells (
+CREATE EXTERNAL TABLE IF NOT EXISTS factSells (
     productType STRING,
     productFirstCategory STRING,
     productSecondCategory STRING,
@@ -22,8 +22,9 @@ CREATE TABLE IF NOT EXISTS factSells (
     customerTotalRevenue DOUBLE,
     customerType STRING)
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ';'
-LINES TERMINATED BY '\n';
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+LOCATION 'rutaDelArchivo';
 
 
 
