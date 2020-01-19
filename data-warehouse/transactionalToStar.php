@@ -474,7 +474,13 @@ else{
         else{
             $first=FALSE;
         }
-       
+        for($i=0; $i<sizeof($usold);$i++){
+            if($usold[$i][0] == $row['personId']){
+                $x=$i;
+                echo "<br>". $x . "<br>";
+            break;
+            }
+        }
        
         $insert .= "(" . 
                         
@@ -487,8 +493,8 @@ else{
                         "'" . $row['salary'] . "'" . "," .
                         "'" . $row['gender'] . "'" . "," .
                         "'" . $row['idCustomer'] . "'" . "," .
-                        "'" . $usold[0]['1'] . "'" . "," .
-                        "'" . $total[0]['1'] . "'" . "," .
+                        "'" . $usold[$x][1] . "'" . "," .
+                        "'" . $total[$x][1] . "'" . "," .
                         "NULL" . ")" ;
                         
      
@@ -503,7 +509,13 @@ else{
             $first=FALSE;
         }
        
-       
+        for($i=0; $i<sizeof($usold);$i++){
+            if($usold[$i][0] == $row['personId']){
+                $x=$i;
+                echo "<br>". $x . "<br>";
+            break;
+            }
+        }
         $insert .= "(" . 
                         
                         "'" . $row['idProduct'] . "'" . "," . 
@@ -515,8 +527,8 @@ else{
                         "'" . $row['salary'] . "'" . "," .
                         "'" . $row['gender'] . "'" . "," .
                         "'" . $row['idCustomer'] . "'" . "," .
-                        "'" . $usold[0]['1'] . "'" . "," .
-                        "'" . $total[0]['1'] . "'" . "," .
+                        "'" . $usold[$x][1] . "'" . "," .
+                        "'" . $total[$x][1] . "'" . "," .
                         "NULL" . ")" ;
                         
      
@@ -531,7 +543,13 @@ else{
             $first=FALSE;
         }
        
-       
+        for($i=0; $i<sizeof($usold);$i++){
+            if($usold[$i][0] == $row['personId']){
+                $x=$i;
+                echo "<br>". $x . "<br>";
+            break;
+            }
+        }
         $insert .= "(" . 
                         
                         "'" . $row['idProduct'] . "'" . "," . 
@@ -543,8 +561,8 @@ else{
                         "'" . $row['salary'] . "'" . "," .
                         "'" . $row['gender'] . "'" . "," .
                         "'" . $row['idCustomer'] . "'" . "," .
-                        "'" . $usold[0]['1'] . "'" . "," .
-                        "'" . $total[0]['1'] . "'" . "," .
+                        "'" . $usold[$x][1] . "'" . "," .
+                        "'" . $total[$x][1] . "'" . "," .
                         "NULL" . ")" ;
                         
      
@@ -559,7 +577,13 @@ else{
             $first=FALSE;
         }
        
-       
+        for($i=0; $i<sizeof($usold);$i++){
+            if($usold[$i][0] == $row['personId']){
+                $x=$i;
+                echo "<br>". $x . "<br>";
+            break;
+            }
+        }
         $insert .= "(" . 
                        
                         "'" . $row['idProduct'] . "'" . "," . 
@@ -571,8 +595,8 @@ else{
                         "'" . $row['salary'] . "'" . "," .
                         "'" . $row['gender'] . "'" . "," .
                         "'" . $row['idCustomer'] . "'" . "," .
-                        "'" . $usold[0]['1'] . "'" . "," .
-                        "'" . $total[0]['1'] . "'" . "," .
+                        "'" . $usold[$x][1] . "'" . "," .
+                        "'" . $total[$x][1] . "'" . "," .
                         "NULL" . ")" ;
                         
      

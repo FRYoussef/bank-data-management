@@ -53,11 +53,12 @@ CREATE TABLE `dimcountry` (
 
 CREATE TABLE `dimcustomer` (
   `idCustomer` int(6) NOT NULL,
+  `idTransactionalCustomer` int(6) NOT NULL,
   `idBirthDate` int(6) NOT NULL,
   `idLocation` int(6) NOT NULL,
   `idSalary` int(6) NOT NULL,
   `idGender` int(6) NOT NULL,
-  `customerType` int(11) NOT NULL
+  `customerType` text NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -67,9 +68,9 @@ CREATE TABLE `dimcustomer` (
 --
 
 CREATE TABLE `dimday` (
-  `idDay` int(6) NOT NULL,
+  `idMonth` int(6) NOT NULL,
   `day` int(2) NOT NULL,
-  `idMonth` int(6) NOT NULL
+  `idDay` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -115,7 +116,7 @@ CREATE TABLE `dimmonth` (
 
 CREATE TABLE `dimpost` (
   `idLocation` int(6) NOT NULL,
-  `postcode` int(5) NOT NULL,
+  `postcode` text NOT NULL,
   `idCity` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -129,11 +130,11 @@ CREATE TABLE `dimproduct` (
   `idProduct` int(6) NOT NULL,
   `transactionalId` int(6) NOT NULL,
   `product` enum('depositAccount','savingsAccount','loan','investmentFund','bankDeposit','pensionFund','stockExchange') NOT NULL,
-  `investment` double(6,2) NOT NULL,
+  `investment` double(18,4) NOT NULL,
   `idProductType` int(6) NOT NULL,
-  `currency` enum('Dolar','Euro','Yen','Libra','Franco') NOT NULL,
+  `currency` enum('EUR','JPY','USD','GBP') NOT NULL,
   `type` enum('fix','variable') NOT NULL,
-  `interest` double(3,2) NOT NULL
+  `interest` double(2,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -156,7 +157,7 @@ CREATE TABLE `dimregion` (
 
 CREATE TABLE `dimsalary` (
   `idSalary` int(6) NOT NULL,
-  `salary` double(6,2) NOT NULL
+  `salary` double(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -189,10 +190,10 @@ CREATE TABLE `dimyear` (
 
 CREATE TABLE `factsells` (
   `idProduct` int(6) NOT NULL,
-  `idSellDate` int(6) NOT NULL,
   `idCustomer` int(6) NOT NULL,
+  `idSellDate` int(6) NOT NULL,
   `unitsSold` int(6) NOT NULL,
-  `revenue` double(10,2) NOT NULL
+  `revenue` double(100,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -227,7 +228,7 @@ ALTER TABLE `dimcustomer`
 --
 ALTER TABLE `dimday`
   ADD PRIMARY KEY (`idDay`),
-  ADD KEY `fk_idMonth` (`idMonth`);
+  ADD KEY `fk_idDay` (`idDay`);
 
 --
 -- Indices de la tabla `dimfirstproducttype`
@@ -292,7 +293,7 @@ ALTER TABLE `dimyear`
 -- Indices de la tabla `factsells`
 --
 ALTER TABLE `factsells`
-  ADD PRIMARY KEY (`idProduct`),
+   ADD KEY `fk_idProduct` (`idProduct`),
   ADD KEY `fk_idSellDate` (`idSellDate`),
   ADD KEY `fk_idCustomer` (`idCustomer`);
 
