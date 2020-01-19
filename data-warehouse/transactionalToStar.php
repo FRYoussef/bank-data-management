@@ -22,7 +22,6 @@ if ( !$transConn) {
 
 //------------------------- FILL DIM CUSTOMER LOCATION ----------------------------
 
- 
 $query =    "INSERT INTO StarSchema.dimcustomerlocation (postcode, city, region, country)
             SELECT DISTINCT AddressPostCode.postCode, AddressLocality.locality, AddressProvince.province,
             AddressCountry.country
@@ -54,36 +53,40 @@ if(!$result){
 //------------------------- FILL DIM PRODUCT -----------------------
 
 $insert = "";
-$queryDA =  "SELECT DISTINCT DepositAccount.accountId AS transactionalId, 'depositAccount' AS product, 
+$queryDA =  "INSERT INTO StarSchema.dimproduct (transactionalId, product, investment, currency, interestType, interest)
+            SELECT DISTINCT DepositAccount.accountId AS transactionalId, 'depositAccount' AS product, 
             Account.amount AS investment, Account.currency AS currency, 'fix' AS interestType, '0' AS interest
-            FROM Account
-            INNER JOIN DepositAccount ON Account.accountId = DepositAccount.accountId
+            FROM BankDataManagement.Account
+            INNER JOIN BankDataManagement.DepositAccount ON Account.accountId = DepositAccount.accountId
             WHERE DATEDIFF(NOW(), DepositAccount.timestamp) < 15
             ";
 
-$querySA =  "SELECT DISTINCT SavingsAccount.accountId AS transactionalId, 'savingsAccount' AS product, 
+$querySA =  "INSERT INTO StarSchema.dimproduct (transactionalId, product, investment, currency, interestType, interest)
+            SELECT DISTINCT SavingsAccount.accountId AS transactionalId, 'savingsAccount' AS product, 
             Account.amount AS investment, Account.currency AS currency, 'fix' AS interestType, '0' AS interest
-            FROM Account
-            INNER JOIN SavingsAccount ON Account.accountId = SavingsAccount.accountId
+            FROM BankDataManagement.Account
+            INNER JOIN BankDataManagement.SavingsAccount ON Account.accountId = SavingsAccount.accountId
             WHERE DATEDIFF(NOW(), SavingsAccount.timestamp) < 15
             ";
-$queryLoan =   "SELECT DISTINCT Loan.productId AS transactionalId, 'loan' AS product,
-               Product.totalAmount AS investment, Account.currency AS 'currency', Interest.interest AS 'interest', IF (Interest.isVariable='1', 'variable', 'fix') AS 'interestType'
-               FROM Loan
-               INNER JOIN Owns ON Loan.productId = Owns.productId
-               INNER JOIN Account ON Owns.accountId = Account.accountId
-               INNER JOIN Interest ON Interest.interestId = Owns.interestId
-               INNER JOIN Product ON Product.productId = Loan.productId
+$queryLoan =   "INSERT INTO StarSchema.dimproduct (transactionalId, product, investment, currency, interestType, interest)
+                SELECT DISTINCT Loan.productId AS transactionalId, 'loan' AS product,
+               Product.totalAmount AS investment, Account.currency AS 'currency', IF (Interest.isVariable='1', 'variable', 'fix') AS 'interestType', Interest.interest AS 'interest'
+               FROM BankDataManagement.Loan
+               INNER JOIN BankDataManagement.Owns ON Loan.productId = Owns.productId
+               INNER JOIN BankDataManagement.Account ON Owns.accountId = Account.accountId
+               INNER JOIN BankDataManagement.Interest ON Interest.interestId = Owns.interestId
+               INNER JOIN BankDataManagement.Product ON Product.productId = Loan.productId
                WHERE DATEDIFF(NOW(), Loan.timestamp) < 15
                ";
 
-$queryFA =  "SELECT DISTINCT FinancialAsset.productId AS transactionalId, FinancialAsset.type AS product,
-             Product.totalAmount AS investment, Account.currency AS 'currency', Interest.interest AS 'interest', IF (Interest.isVariable='1', 'variable', 'fix') AS 'interestType'
-            FROM FinancialAsset
-            INNER JOIN Owns ON FinancialAsset.productId = Owns.productId
-            INNER JOIN Account ON Owns.accountId = Account.accountId
-            INNER JOIN Interest ON Interest.interestId = Owns.interestId
-            INNER JOIN Product ON Product.productId = FinancialAsset.productId
+$queryFA =  "INSERT INTO StarSchema.dimproduct (transactionalId, product, investment, currency, interestType, interest)
+            SELECT DISTINCT FinancialAsset.productId AS transactionalId, FinancialAsset.type AS product,
+             Product.totalAmount AS investment, Account.currency AS 'currency', IF (Interest.isVariable='1', 'variable', 'fix') AS 'interestType', Interest.interest AS 'interest'
+            FROM BankDataManagement.FinancialAsset
+            INNER JOIN BankDataManagement.Owns ON FinancialAsset.productId = Owns.productId
+            INNER JOIN BankDataManagement.Account ON Owns.accountId = Account.accountId
+            INNER JOIN BankDataManagement.Interest ON Interest.interestId = Owns.interestId
+            INNER JOIN BankDataManagement.Product ON Product.productId = FinancialAsset.productId
             WHERE DATEDIFF(NOW(), FinancialAsset.timestamp) < 15
             ";
 
@@ -95,94 +98,10 @@ $resultFA = mysqli_query($transConn, $queryFA);
 
 
 if(!$resultDA or !$resultSA or !$resultLoan or !$resultFA){
-    echo "SELECT PRODUCTS ERROR: " . mysqli_error($transConn);
+    echo "FILL PRODUCTS ERROR: " . mysqli_error($transConn);
 }
 else{
-    $insert = "INSERT INTO `dimproduct` VALUES";
-    $first = TRUE;
-    
-    while($row1 = mysqli_fetch_array($resultDA)) {
-        if(!$first){
-            $insert .= ",";
-        }
-        else{
-            $first=FALSE;
-        }
-
-        $insert .= "(" . 
-                    "NULL" . "," .
-                    "'" . $row1['transactionalId'] . "'" . "," . 
-                    "'" . $row1['product'] . "'" . "," . 
-                    "'" . $row1['investment'] . "'" . "," . 
-                    "'" . $row1['currency'] . "'" . "," . 
-                    "'" . $row1['interestType'] . "'" . "," .
-                    "'" .  $row1['interest'] . "'". ")";
-        
-    }
-    
-    while($row2 = mysqli_fetch_array($resultFA)) {
-        if(!$first){
-            $insert .= ",";
-        }
-        else{
-            $first=FALSE;
-        }
-        $insert .= "(" . 
-                    "NULL" . "," .
-                    "'" . $row2['transactionalId'] . "'" . "," . 
-                    "'" . $row2['product'] . "'" . "," .
-                    "'" . $row2['investment'] . "'" . "," . 
-                    "'" . $row2['currency'] . "'" . "," . 
-                    "'" . $row2['interestType'] . "'" . "," .
-                    "'" .  $row2['interest'] . "'". ")";
-        
-    }
-    
-    while($row3 = mysqli_fetch_array($resultSA)) {
-        if(!$first){
-            $insert .= ",";
-        }
-        else{
-            $first=FALSE;
-        }
-
-        $insert .= "(" . 
-                    "NULL" . "," .
-                    "'" . $row3['transactionalId'] . "'" . "," . 
-                    "'" . $row3['product'] . "'" . "," . 
-                    "'" . $row3['investment'] . "'" . "," . 
-                    "'" . $row3['currency'] . "'" . "," . 
-                    "'" . $row3['interestType'] . "'" . "," .
-                    "'" .  $row3['interest'] . "'". ")";
-        
-    }
-    while($row4 = mysqli_fetch_array($resultLoan)) {
-        if(!$first){
-            $insert .= ",";
-        }
-        else{
-            $first=FALSE;
-        }
-
-        $insert .= "(" . 
-                    "NULL" . "," .
-                    "'" . $row4['transactionalId'] . "'" . "," . 
-                    "'" . $row4['product'] . "'" . "," . 
-                    "'" . $row4['investment'] . "'" . "," . 
-                    "'" . $row4['currency'] . "'" . "," . 
-                    "'" . $row4['interestType'] . "'" . "," .
-                    "'" .  $row4['interest'] . "'". ")";
-    }
-}
-$insert .= ";";
-
-
-if ($insert != "INSERT INTO `dimproduct` VALUES;"){
-    if (mysqli_query($starConn, $insert)) { 
-        echo "dim product filled". "<br>". "<br>"; 
-    } else { 
-        echo "FILL PRODUCTS ERROR: " . mysqli_error($starConn); 
-    }
+    echo "OK FILL DIM PRODUCT";      
 }
 
 //------------------------- FILL DIM DATE -----------------------
@@ -297,7 +216,7 @@ if (mysqli_query($starConn, $insert)) {
 } else { 
     echo "ERROR FILL 2ND TYPE"  . mysqli_error($starConn); 
 }
- 
+
 
 //------------------------- FILL FACT SELLS -----------------------
 
@@ -345,18 +264,18 @@ else{
 
 $queryaccount =    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSchema.dimFirstProductType.idType AS idFirstProductType,  StarSchema.dimSecondProductType.idType AS idSecondProductType,
             sell.idDate AS idSellDate, bday.idDate AS idCustomerBirthdate, StarSchema.dimcustomerlocation.idLocation AS idCustomerLocation,
-            Person.salary AS salary, Person.gender AS gender, Person.personId AS idCustomer
+            p.salary AS salary, p.gender AS gender, p.personId AS idCustomer
             FROM StarSchema.dimproduct
             INNER JOIN Account ON StarSchema.dimproduct.transactionalId = Account.accountId
             INNER JOIN StarSchema.dimdate AS sell ON sell.day = SUBSTR(Account.timestamp, 9, 2) AND sell.month = SUBSTR(Account.timestamp, 6, 2) AND sell.year = SUBSTR(Account.timestamp, 1, 4)
             INNER JOIN Owns ON StarSchema.dimproduct.transactionalId = Owns.accountId
-            INNER JOIN Person ON Person.personId = Owns.personId
-            INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(Person.dateOfBirth, 9, 2) AND bday.month = SUBSTR(Person.dateOfBirth, 6, 2) AND bday.year = SUBSTR(Person.dateOfBirth, 1, 4)
-            INNER JOIN Address ON Person.addressId = Address.addressId
-            INNER JOIN AddressCountry ON Address.addressCountryId
-            INNER JOIN AddressPostCode ON Address.addressPCId
-            INNER JOIN AddressLocality ON Address.addressLocId
-            INNER JOIN AddressProvince ON Address.addressProvId
+            INNER JOIN Person p ON p.personId = Owns.personId
+            INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(p.dateOfBirth, 9, 2) AND bday.month = SUBSTR(p.dateOfBirth, 6, 2) AND bday.year = SUBSTR(p.dateOfBirth, 1, 4)
+            INNER JOIN Address ON p.addressId = Address.addressId
+            INNER JOIN AddressCountry ON AddressCountry.addressCountryId = Address.addressCountryId
+INNER JOIN AddressPostCode ON AddressPostCode.addressPCId = Address.addressPCId
+INNER JOIN AddressLocality ON AddressLocality.addressLocId = Address.addressLocId
+INNER JOIN AddressProvince ON AddressProvince.addressProvId = Address.addressProvId
             INNER JOIN StarSchema.dimcustomerlocation ON 
                     StarSchema.dimcustomerlocation.postcode = AddressPostCode.postcode
                 AND AddressLocality.locality = StarSchema.dimcustomerlocation.city
@@ -365,24 +284,25 @@ $queryaccount =    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSch
             INNER JOIN StarSchema.dimFirstProductType ON StarSchema.dimFirstProductType.type = 'account'
             INNER JOIN StarSchema.dimSecondProductType ON StarSchema.dimSecondProductType.type = 'RequiredProduct'
             WHERE StarSchema.dimproduct.product='depositAccount' OR  StarSchema.dimproduct.product='savingsAccount'
+            GROUP BY StarSchema.dimproduct.idProduct
             "; 
 
 
 $queryloan =    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSchema.dimFirstProductType.idType AS idFirstProductType,  StarSchema.dimSecondProductType.idType AS idSecondProductType,
             sell.idDate AS idSellDate, bday.idDate AS idCustomerBirthdate, StarSchema.dimcustomerlocation.idLocation AS idCustomerLocation,
-            Person.salary AS salary, Person.gender AS gender, Person.personId AS idCustomer
+            p.salary AS salary, p.gender AS gender, p.personId AS idCustomer
             FROM StarSchema.dimproduct
             INNER JOIN Product ON StarSchema.dimproduct.transactionalId = Product.productId
             INNER JOIN Loan ON Loan.productId = Product.productId
             INNER JOIN StarSchema.dimdate AS sell ON sell.day = SUBSTR(Loan.timestamp, 9, 2) AND sell.month = SUBSTR(Loan.timestamp, 6, 2) AND sell.year = SUBSTR(Loan.timestamp, 1, 4)
             INNER JOIN Owns ON StarSchema.dimproduct.transactionalId = Owns.productId
-            INNER JOIN Person ON Person.personId = Owns.personId
-            INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(Person.dateOfBirth, 9, 2) AND bday.month = SUBSTR(Person.dateOfBirth, 6, 2) AND bday.year = SUBSTR(Person.dateOfBirth, 1, 4)
-            INNER JOIN Address ON Person.addressId = Address.addressId
-            INNER JOIN AddressCountry ON Address.addressCountryId
-            INNER JOIN AddressPostCode ON Address.addressPCId
-            INNER JOIN AddressLocality ON Address.addressLocId
-            INNER JOIN AddressProvince ON Address.addressProvId
+            INNER JOIN Person p ON p.personId = Owns.personId
+            INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(p.dateOfBirth, 9, 2) AND bday.month = SUBSTR(p.dateOfBirth, 6, 2) AND bday.year = SUBSTR(p.dateOfBirth, 1, 4)
+            INNER JOIN Address ON p.addressId = Address.addressId
+            INNER JOIN AddressCountry ON AddressCountry.addressCountryId = Address.addressCountryId
+INNER JOIN AddressPostCode ON AddressPostCode.addressPCId = Address.addressPCId
+INNER JOIN AddressLocality ON AddressLocality.addressLocId = Address.addressLocId
+INNER JOIN AddressProvince ON AddressProvince.addressProvId = Address.addressProvId
             INNER JOIN StarSchema.dimcustomerlocation ON 
                     StarSchema.dimcustomerlocation.postcode = AddressPostCode.postcode
                 AND AddressLocality.locality = StarSchema.dimcustomerlocation.city
@@ -391,24 +311,24 @@ $queryloan =    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSchema
             INNER JOIN StarSchema.dimFirstProductType ON StarSchema.dimFirstProductType.type = 'loan'
             INNER JOIN StarSchema.dimSecondProductType ON StarSchema.dimSecondProductType.type = 'OptionalProduct'
                 WHERE Loan.cardId IS NULL AND StarSchema.dimproduct.product='loan'
-
+                GROUP BY StarSchema.dimproduct.idProduct
             "; 
 
 $querycardloan =    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSchema.dimFirstProductType.idType AS idFirstProductType,  StarSchema.dimSecondProductType.idType AS idSecondProductType,
 sell.idDate AS idSellDate, bday.idDate AS idCustomerBirthdate, StarSchema.dimcustomerlocation.idLocation AS idCustomerLocation,
-Person.salary AS salary, Person.gender AS gender, Person.personId AS idCustomer
+p.salary AS salary, p.gender AS gender, p.personId AS idCustomer
 FROM StarSchema.dimproduct
 INNER JOIN Product ON StarSchema.dimproduct.transactionalId = Product.productId
 INNER JOIN Loan ON Loan.productId = Product.productId
 INNER JOIN StarSchema.dimdate AS sell ON sell.day = SUBSTR(Loan.timestamp, 9, 2) AND sell.month = SUBSTR(Loan.timestamp, 6, 2) AND sell.year = SUBSTR(Loan.timestamp, 1, 4)
 INNER JOIN Owns ON StarSchema.dimproduct.transactionalId = Owns.productId
-INNER JOIN Person ON Person.personId = Owns.personId
-INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(Person.dateOfBirth, 9, 2) AND bday.month = SUBSTR(Person.dateOfBirth, 6, 2) AND bday.year = SUBSTR(Person.dateOfBirth, 1, 4)
-INNER JOIN Address ON Person.addressId = Address.addressId
-INNER JOIN AddressCountry ON Address.addressCountryId
-INNER JOIN AddressPostCode ON Address.addressPCId
-INNER JOIN AddressLocality ON Address.addressLocId
-INNER JOIN AddressProvince ON Address.addressProvId
+INNER JOIN Person p ON p.personId = Owns.personId
+INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(p.dateOfBirth, 9, 2) AND bday.month = SUBSTR(p.dateOfBirth, 6, 2) AND bday.year = SUBSTR(p.dateOfBirth, 1, 4)
+INNER JOIN Address ON p.addressId = Address.addressId
+INNER JOIN AddressCountry ON AddressCountry.addressCountryId = Address.addressCountryId
+INNER JOIN AddressPostCode ON AddressPostCode.addressPCId = Address.addressPCId
+INNER JOIN AddressLocality ON AddressLocality.addressLocId = Address.addressLocId
+INNER JOIN AddressProvince ON AddressProvince.addressProvId = Address.addressProvId
 INNER JOIN StarSchema.dimcustomerlocation ON 
         StarSchema.dimcustomerlocation.postcode = AddressPostCode.postcode
     AND AddressLocality.locality = StarSchema.dimcustomerlocation.city
@@ -417,24 +337,25 @@ INNER JOIN StarSchema.dimcustomerlocation ON
 INNER JOIN StarSchema.dimFirstProductType ON StarSchema.dimFirstProductType.type = 'creditCardLoan'
 INNER JOIN StarSchema.dimSecondProductType ON StarSchema.dimSecondProductType.type = 'OptionalProduct'
     WHERE Loan.cardId IS NOT NULL AND StarSchema.dimproduct.product='loan'
+    GROUP BY StarSchema.dimproduct.idProduct
 "; 
 
 
 $queryfa=    "SELECT StarSchema.dimproduct.idProduct AS idProduct, StarSchema.dimFirstProductType.idType AS idFirstProductType,  StarSchema.dimSecondProductType.idType AS idSecondProductType,
 sell.idDate AS idSellDate, bday.idDate AS idCustomerBirthdate, StarSchema.dimcustomerlocation.idLocation AS idCustomerLocation,
-Person.salary AS salary, Person.gender AS gender, Person.personId AS idCustomer
+p.salary AS salary, p.gender AS gender, p.personId AS idCustomer
 FROM StarSchema.dimproduct
 INNER JOIN Product ON StarSchema.dimproduct.transactionalId = Product.productId
 INNER JOIN FinancialAsset ON FinancialAsset.productId = Product.productId
 INNER JOIN StarSchema.dimdate AS sell ON sell.day = SUBSTR(FinancialAsset.timestamp, 9, 2) AND sell.month = SUBSTR(FinancialAsset.timestamp, 6, 2) AND sell.year = SUBSTR(FinancialAsset.timestamp, 1, 4)
 INNER JOIN Owns ON StarSchema.dimproduct.transactionalId = Owns.productId
-INNER JOIN Person ON Person.personId = Owns.personId
-INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(Person.dateOfBirth, 9, 2) AND bday.month = SUBSTR(Person.dateOfBirth, 6, 2) AND bday.year = SUBSTR(Person.dateOfBirth, 1, 4)
-INNER JOIN Address ON Person.addressId = Address.addressId
-INNER JOIN AddressCountry ON Address.addressCountryId
-INNER JOIN AddressPostCode ON Address.addressPCId
-INNER JOIN AddressLocality ON Address.addressLocId
-INNER JOIN AddressProvince ON Address.addressProvId
+INNER JOIN Person p ON p.personId = Owns.personId
+INNER JOIN StarSchema.dimdate AS bday ON bday.day = SUBSTR(p.dateOfBirth, 9, 2) AND bday.month = SUBSTR(p.dateOfBirth, 6, 2) AND bday.year = SUBSTR(p.dateOfBirth, 1, 4)
+INNER JOIN Address ON p.addressId = Address.addressId
+INNER JOIN AddressCountry ON AddressCountry.addressCountryId = Address.addressCountryId
+INNER JOIN AddressPostCode ON AddressPostCode.addressPCId = Address.addressPCId
+INNER JOIN AddressLocality ON AddressLocality.addressLocId = Address.addressLocId
+INNER JOIN AddressProvince ON AddressProvince.addressProvId = Address.addressProvId
 INNER JOIN StarSchema.dimcustomerlocation ON 
         StarSchema.dimcustomerlocation.postcode = AddressPostCode.postcode
     AND AddressLocality.locality = StarSchema.dimcustomerlocation.city
@@ -443,6 +364,7 @@ INNER JOIN StarSchema.dimcustomerlocation ON
 INNER JOIN StarSchema.dimFirstProductType ON StarSchema.dimFirstProductType.type = 'financialAsset'
 INNER JOIN StarSchema.dimSecondProductType ON StarSchema.dimSecondProductType.type = 'OptionalProduct'
 WHERE StarSchema.dimproduct.product='bankDesposit' OR StarSchema.dimproduct.product='investmentFund' OR StarSchema.dimproduct.product='pensionFund' OR StarSchema.dimproduct.product='stockExchange'
+GROUP BY StarSchema.dimproduct.idProduct
 "; 
 
 
@@ -460,6 +382,7 @@ $resultfa = mysqli_query($transConn, $queryfa);
 if(!$resultaccount  or !$resultloan or !$resultcardloan  or !$resultfa){
     echo mysqli_error($transConn);
     echo mysqli_error($starConn);
+    echo "<br> HOLAHOLITA <br>";
 }
 
 else{
@@ -475,9 +398,10 @@ else{
             $first=FALSE;
         }
         for($i=0; $i<sizeof($usold);$i++){
-            if($usold[$i][0] == $row['personId']){
+           
+            if($usold[$i][0] == $row['idCustomer']){
                 $x=$i;
-                echo "<br>". $x . "<br>";
+                
             break;
             }
         }
@@ -510,9 +434,9 @@ else{
         }
        
         for($i=0; $i<sizeof($usold);$i++){
-            if($usold[$i][0] == $row['personId']){
+            if($usold[$i][0] == $row['idCustomer']){
                 $x=$i;
-                echo "<br>". $x . "<br>";
+                
             break;
             }
         }
@@ -544,9 +468,9 @@ else{
         }
        
         for($i=0; $i<sizeof($usold);$i++){
-            if($usold[$i][0] == $row['personId']){
+            if($usold[$i][0] == $row['idCustomer']){
                 $x=$i;
-                echo "<br>". $x . "<br>";
+                
             break;
             }
         }
@@ -578,9 +502,9 @@ else{
         }
        
         for($i=0; $i<sizeof($usold);$i++){
-            if($usold[$i][0] == $row['personId']){
+            if($usold[$i][0] == $row['idCustomer']){
                 $x=$i;
-                echo "<br>". $x . "<br>";
+            
             break;
             }
         }
@@ -603,6 +527,7 @@ else{
         
     }
 }
+
 if ($insert != "INSERT IGNORE INTO `factsells` VALUES;"){
 
     if(!mysqli_query($starConn, $insert)){
